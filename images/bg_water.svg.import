@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/frog_0.svg-b4ab698830437008de3c0616d8425ca9.stex"
+path="res://.import/bg_water.svg-bbfae5d4d6c46005d2eb3abc39690d4b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/frog_0.svg"
-dest_files=[ "res://.import/frog_0.svg-b4ab698830437008de3c0616d8425ca9.stex" ]
+source_file="res://images/bg_water.svg"
+dest_files=[ "res://.import/bg_water.svg-bbfae5d4d6c46005d2eb3abc39690d4b.stex" ]
 
 [params]
 
@@ -31,4 +31,4 @@ process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true
-svg/scale=0.12
+svg/scale=0.28
