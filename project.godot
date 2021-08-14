@@ -13,13 +13,16 @@ config_version=4
 config/name="Number Nibbler"
 run/main_scene="res://Level.tscn"
 config/icon="res://number_nibbler_icon.png"
+config/windows_native_icon="res://number_nibbler_icon.ico"
 
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/test_width=1920
-window/size/test_height=1080
+window/size/test_width=1280
+window/size/test_height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [physics]
 
@@ -30,3 +33,4 @@ common/enable_pause_aware_picking=true
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
+environment/default_clear_color=Color( 0.298039, 0.858824, 1, 1 )
