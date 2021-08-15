@@ -7,7 +7,8 @@ public class Frog : Area2D
     private Level _Level;
     private bool _ReadyToProcessNewActions;
     private Tween _FrogTween;
-    public Vector2 Der;
+
+    public const float FROG_MOVE_DURATION = .6f;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -41,19 +42,22 @@ public class Frog : Area2D
             }
         }
 
-        Console.WriteLine(_FrogTween.IsActive());
-
-
         // TODO - click based movement, queueing movements longer than 1 step, and diagonal moves
 
         if (moveToExecute != null)
         {
             _ReadyToProcessNewActions = false;
-            _FrogTween.InterpolateProperty(this, "position", Position, moveToExecute, 1f);
+            _FrogTween.InterpolateProperty(this, "position", Position, moveToExecute, FROG_MOVE_DURATION);
+            _FrogTween.InterpolateCallback(this, FROG_MOVE_DURATION, "OnFrogMoveCompleted");
             _FrogTween.Start();
             // TODO start tween, disable canProcess, add callback for reenabling..
         }
 
         // TODO add eating logic
+    }
+
+    public void OnFrogMoveCompleted()
+    {
+        _ReadyToProcessNewActions = true;
     }
 }
