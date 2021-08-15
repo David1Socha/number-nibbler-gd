@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://images/frog_0.svg" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://images/frog_1.svg" type="Texture" id=4]
 [ext_resource path="res://level.tres" type="TileSet" id=5]
 [ext_resource path="res://images/bg_water.svg" type="Texture" id=6]
+[ext_resource path="res://scripts/Frog.cs" type="Script" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -34,7 +35,8 @@ format = 1
 tile_data = PoolIntArray( 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0 )
 
 [node name="Frog" type="Area2D" parent="."]
-position = Vector2( 720, 360 )
+position = Vector2( 720, 540 )
+script = ExtResource( 7 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -42,7 +44,6 @@ __meta__ = {
 [node name="FrogSprite" type="AnimatedSprite" parent="Frog"]
 frames = SubResource( 1 )
 animation = "eat"
-frame = 1
 playing = true
 centered = false
 offset = Vector2( 36, 32 )
@@ -50,3 +51,5 @@ offset = Vector2( 36, 32 )
 [node name="FrogCollisionShape" type="CollisionShape2D" parent="Frog"]
 position = Vector2( 84.757, 93.9391 )
 shape = SubResource( 2 )
+
+[node name="FrogTween" type="Tween" parent="Frog"]
