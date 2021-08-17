@@ -8,6 +8,8 @@
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
+ENEMY_SPAWN_TIME_DELAY_BASE = 6.0
+ENEMY_SPAWN_TIME_DELAY_NOISE = 1.0
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )

@@ -1,11 +1,19 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public class Level : Node2D
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
+    [Export]
+    private float ENEMY_SPAWN_TIME_DELAY_BASE;
+
+    /// <summary>
+    /// added and substracted from base spawn delay to determine range of possible values
+    /// </summary>
+    [Export]
+    private float ENEMY_SPAWN_TIME_DELAY_NOISE;
+
+    private float _enemySpawnTimeDelay;
 
     private Rect2 _GridRect;
     private TileMap _LilyGrid;
@@ -15,6 +23,17 @@ public class Level : Node2D
     {
         _LilyGrid = GetNode<TileMap>("LilyGrid");
         _GridRect = GetNode<TileMap>("LilyGrid").GetUsedRect();
+
+        SpawnEnemyAfterDelay();
+    }
+
+    private async void SpawnEnemyAfterDelay()
+    {
+        var random = new RandomNumberGenerator();
+        _enemySpawnTimeDelay = random.RandfRange(ENEMY_SPAWN_TIME_DELAY_BASE - ENEMY_SPAWN_TIME_DELAY_NOISE, ENEMY_SPAWN_TIME_DELAY_BASE + ENEMY_SPAWN_TIME_DELAY_NOISE);
+        GD.Print(_enemySpawnTimeDelay);
+        await ToSignal(GetTree().CreateTimer(_enemySpawnTimeDelay), "timeout");
+        GD.Print("rawr");
     }
 
     public Vector2? CanMove(Vector2 currentPos, Vector2 gridMovementDelta)
