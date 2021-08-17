@@ -4,60 +4,137 @@ using System;
 public class Frog : Area2D
 {
 
-    private Level _Level;
-    private bool _ReadyToProcessNewActions;
-    private Tween _FrogTween;
+    private Level _level;
+    private bool _readyToProcessNewActions;
+    private Tween _frogTween;
+    private AudioStreamPlayer _frogMoveSound, _frogDamagedSound;
+    private Vector2? _targetDestination;
 
-    public const float FROG_MOVE_DURATION = .6f;
+    private Vector2 GridPosition { get { return _level.WorldToMap(Position); } }
+
+    [Export]
+    private float FROG_MOVE_DURATION;
+    private float FROG_DIAG_MOVE_DURATION { get { return FROG_MOVE_DURATION * (float)Math.Sqrt(2); } } // a^2 + b^2 = c^2 ; therefore diagonal distance == sqrt(2) * horizontal distance
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _Level = GetParent<Level>();
-        _ReadyToProcessNewActions = true;
-        _FrogTween = GetNode<Tween>("FrogTween");
+        _level = GetParent<Level>();
+        _readyToProcessNewActions = true;
+        _frogTween = GetNode<Tween>("FrogTween");
+        _frogMoveSound = GetNode<AudioStreamPlayer>("FrogMoveSound");
+        _frogDamagedSound = GetNode<AudioStreamPlayer>("FrogDamagedSound");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
-        Vector2? moveToExecute = null;
-        if (_ReadyToProcessNewActions)
-        {
-            if (Input.IsActionJustPressed("ui_up"))
-            {
-                moveToExecute = _Level.CanMove(Position, new Vector2(0, -1));
-            }
-            else if (Input.IsActionJustPressed("ui_down"))
-            {
-                moveToExecute = _Level.CanMove(Position, new Vector2(0, 1));
-            }
-            else if (Input.IsActionJustPressed("ui_left"))
-            {
-                moveToExecute = _Level.CanMove(Position, new Vector2(-1, 0));
-            }
-            else if (Input.IsActionJustPressed("ui_right"))
-            {
-                moveToExecute = _Level.CanMove(Position, new Vector2(1, 0));
-            }
-        }
 
         // TODO - click based movement, queueing movements longer than 1 step, and diagonal moves
 
-        if (moveToExecute != null)
-        {
-            _ReadyToProcessNewActions = false;
-            _FrogTween.InterpolateProperty(this, "position", Position, moveToExecute, FROG_MOVE_DURATION);
-            _FrogTween.InterpolateCallback(this, FROG_MOVE_DURATION, "OnFrogMoveCompleted");
-            _FrogTween.Start();
-            // TODO start tween, disable canProcess, add callback for reenabling..
-        }
 
         // TODO add eating logic
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+
+        Vector2 currentDestinationOrPosition = _targetDestination != null ? _level.MapToWorld(_targetDestination.Value) : Position;
+
+        if (@event.IsActionPressed("ui_up"))
+        {
+            _targetDestination = _level.CanMove(currentDestinationOrPosition, new Vector2(0, -1));
+        }
+        else if (@event.IsActionPressed("ui_down"))
+        {
+            _targetDestination = _level.CanMove(currentDestinationOrPosition, new Vector2(0, 1));
+        }
+        else if (@event.IsActionPressed("ui_left"))
+        {
+            _targetDestination = _level.CanMove(currentDestinationOrPosition, new Vector2(-1, 0));
+        }
+        else if (@event.IsActionPressed("ui_right"))
+        {
+            _targetDestination = _level.CanMove(currentDestinationOrPosition, new Vector2(1, 0));
+        }
+        else if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+        {
+            if (mouseEvent.ButtonIndex == (int)ButtonList.Left)
+            {
+                var targetGridCoords = _level.WorldToMap(mouseEvent.Position);
+                _targetDestination = _level.CanMove(targetGridCoords);
+            }
+        }
+
+        if (_readyToProcessNewActions)
+        {
+            if (_targetDestination.HasValue)
+            {
+                MoveFrogTowardsTargetDestination();
+            }
+        }
+    }
+
+    private void MoveFrogTowardsTargetDestination()
+    {
+        const int step = 1;
+
+        if (_targetDestination != GridPosition)
+        {
+            _frogMoveSound.Play();
+
+            _readyToProcessNewActions = false;
+
+            int xDelta = getDeltaTowardsDestination(_targetDestination.Value.x, GridPosition.x, step);
+            int yDelta = getDeltaTowardsDestination(_targetDestination.Value.y, GridPosition.y, step);
+
+            var moveDestination = GridPosition + new Vector2(xDelta, yDelta);
+            float moveDuration = xDelta != 0 && yDelta != 0 ? FROG_DIAG_MOVE_DURATION : FROG_MOVE_DURATION;
+            var destinationWorldCoordinates = _level.MapToWorld(moveDestination);
+
+            _frogTween.InterpolateProperty(this, "position", Position, destinationWorldCoordinates, moveDuration);
+            _frogTween.InterpolateCallback(this, moveDuration, nameof(OnFrogMoveCompleted));
+            _frogTween.Start();
+        }
+    }
+
+    public int getDeltaTowardsDestination(float destination, float current, int step)
+    {
+        int delta;
+        switch ((int)(destination - current))
+        {
+            case int n when n > 0:
+                delta = Math.Min(step, n);
+                break;
+            case int n when n < 0:
+                delta = Math.Max(-step, n);
+                break;
+            default:
+                delta = 0;
+                break;
+        }
+
+        return delta;
+    }
+
     public void OnFrogMoveCompleted()
     {
-        _ReadyToProcessNewActions = true;
+        if (_targetDestination == GridPosition || _targetDestination == null)
+        {
+            _readyToProcessNewActions = true;
+            _targetDestination = null;
+        }
+        else
+        {
+            MoveFrogTowardsTargetDestination();
+        }
+
+    }
+
+    public void OnFrogEntered(Area2D other)
+    {
+        _frogDamagedSound.Play();
+        GD.Print("game over !"); // TODO rm this, add gameover/hp loss logic
     }
 }

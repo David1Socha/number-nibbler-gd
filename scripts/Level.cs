@@ -21,10 +21,15 @@ public class Level : Node2D
     {
         var currentGridPos = _LilyGrid.WorldToMap(currentPos);
         var resultingGridPos = currentGridPos + gridMovementDelta;
-        bool moveWouldExceedBoundaries = resultingGridPos.x < _GridRect.Position.x || resultingGridPos.y < _GridRect.Position.y || resultingGridPos.x >= _GridRect.End.x || resultingGridPos.y >= _GridRect.End.y;
+        return CanMove(resultingGridPos);
+    }
+
+    public Vector2? CanMove(Vector2 targetGridCoordinates)
+    {
+        bool moveWouldExceedBoundaries = targetGridCoordinates.x < _GridRect.Position.x || targetGridCoordinates.y < _GridRect.Position.y || targetGridCoordinates.x >= _GridRect.End.x || targetGridCoordinates.y >= _GridRect.End.y;
         if (!moveWouldExceedBoundaries)
         {
-            return _LilyGrid.MapToWorld(resultingGridPos);
+            return targetGridCoordinates;
         }
         else
         {
@@ -32,9 +37,13 @@ public class Level : Node2D
         }
     }
 
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //      
-    //  }
+    public Vector2 WorldToMap(Vector2 worldCoordinates)
+    {
+        return _LilyGrid.WorldToMap(worldCoordinates);
+    }
+
+    public Vector2 MapToWorld(Vector2 gridCoordinates)
+    {
+        return _LilyGrid.MapToWorld(gridCoordinates);
+    }
 }
