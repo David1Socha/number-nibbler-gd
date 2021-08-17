@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/level_warning.ogg-c924b54da641ed7ccab53d4d46cfd5c4.oggstr"
+
+[deps]
+
+source_file="res://sounds/level_warning.ogg"
+dest_files=[ "res://.import/level_warning.ogg-c924b54da641ed7ccab53d4d46cfd5c4.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

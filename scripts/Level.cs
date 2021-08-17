@@ -14,7 +14,7 @@ public class Level : Node2D
     private float ENEMY_SPAWN_TIME_DELAY_NOISE;
 
     private float _enemySpawnTimeDelay;
-
+    private AudioStreamPlayer _spawnWarningSound;
     private Rect2 _GridRect;
     private TileMap _LilyGrid;
 
@@ -22,7 +22,8 @@ public class Level : Node2D
     public override void _Ready()
     {
         _LilyGrid = GetNode<TileMap>("LilyGrid");
-        _GridRect = GetNode<TileMap>("LilyGrid").GetUsedRect();
+        _GridRect = _LilyGrid.GetUsedRect();
+        _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
 
         SpawnEnemyAfterDelay();
     }
@@ -30,10 +31,30 @@ public class Level : Node2D
     private async void SpawnEnemyAfterDelay()
     {
         var random = new RandomNumberGenerator();
+        random.Randomize();
+
         _enemySpawnTimeDelay = random.RandfRange(ENEMY_SPAWN_TIME_DELAY_BASE - ENEMY_SPAWN_TIME_DELAY_NOISE, ENEMY_SPAWN_TIME_DELAY_BASE + ENEMY_SPAWN_TIME_DELAY_NOISE);
-        GD.Print(_enemySpawnTimeDelay);
+
         await ToSignal(GetTree().CreateTimer(_enemySpawnTimeDelay), "timeout");
-        GD.Print("rawr");
+
+        WarnEnemySpawn(random);
+
+        // TODO draw rectangle, then sleep 3s before actual spawn
+
+        // TODO spawn gator, hide warningbox (or despawn it entirely :D)
+    }
+
+    private void WarnEnemySpawn(RandomNumberGenerator random)
+    {
+        _spawnWarningSound.Play();
+
+        var spawnGridLocationX = random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x);
+        var spawnGridLocationY = random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y);
+        var spawnLocation = _LilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
+
+        var warningBox = GetNode<Line2D>("SpawnWarningBox");
+        warningBox.Position = spawnLocation;
+        warningBox.Visible = true;
     }
 
     public Vector2? CanMove(Vector2 currentPos, Vector2 gridMovementDelta)
