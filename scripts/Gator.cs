@@ -40,7 +40,7 @@ public class Gator : Area2D
             .Select(move => (gridDestination: _level.CanMove(Position, move), delta: move))
             .Where(move => move.gridDestination.HasValue)
             .ToList();
-        int moveToRandomlySelect = _random.RandiRange(0, validMoves.Count);
+        int moveToRandomlySelect = _random.RandiRange(0, validMoves.Count - 1);
         var selectedMove = validMoves[moveToRandomlySelect];
         var destination = _level.MapToWorld(validMoves[moveToRandomlySelect].gridDestination.Value);
 

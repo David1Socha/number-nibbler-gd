@@ -4,8 +4,8 @@
 [ext_resource path="res://scripts/Gator.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 30.2517
-height = 46.7774
+radius = 33.3066
+height = 25.8421
 
 [node name="Gator" type="Area2D"]
 script = ExtResource( 2 )
@@ -18,7 +18,7 @@ centered = false
 offset = Vector2( 30, 15 )
 
 [node name="GatorCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 89.5917, 93.7153 )
+position = Vector2( 89.5917, 102.672 )
 shape = SubResource( 1 )
 
 [node name="GatorTween" type="Tween" parent="."]

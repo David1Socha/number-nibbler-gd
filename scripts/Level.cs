@@ -61,8 +61,8 @@ public class Level : Node2D
     {
         _spawnWarningSound.Play();
 
-        var spawnGridLocationX = _random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x);
-        var spawnGridLocationY = _random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y);
+        var spawnGridLocationX = _random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x-1);
+        var spawnGridLocationY = _random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y-1);
         _spawnWorldLocation = _LilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
 
         _warningBox.Position = _spawnWorldLocation;
