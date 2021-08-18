@@ -1,16 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sounds/level_warning.ogg" type="AudioStream" id=3]
 [ext_resource path="res://level.tres" type="TileSet" id=5]
 [ext_resource path="res://images/bg_water.svg" type="Texture" id=6]
-[ext_resource path="res://Gator.tscn" type="PackedScene" id=8]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
-ENEMY_SPAWN_TIME_DELAY_BASE = 5.0
+ENEMY_SPAWN_TIME_DELAY_BASE = 4.0
 ENEMY_SPAWN_TIME_DELAY_NOISE = 1.0
+ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING = 3.0
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
@@ -24,9 +24,6 @@ format = 1
 tile_data = PoolIntArray( 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0 )
 
 [node name="Frog" parent="." instance=ExtResource( 2 )]
-
-[node name="Gator" parent="." instance=ExtResource( 8 )]
-position = Vector2( 540, 180 )
 
 [node name="SpawnWarningBox" type="Line2D" parent="."]
 visible = false

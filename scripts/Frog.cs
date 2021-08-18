@@ -13,7 +13,7 @@ public class Frog : Area2D
     private Vector2 GridPosition { get { return _level.WorldToMap(Position); } }
 
     [Export]
-    private float FROG_MOVE_DURATION;
+    private readonly float FROG_MOVE_DURATION;
     private float FROG_DIAG_MOVE_DURATION { get { return FROG_MOVE_DURATION * (float)Math.Sqrt(2); } } // a^2 + b^2 = c^2 ; therefore diagonal distance == sqrt(2) * horizontal distance
 
     // Called when the node enters the scene tree for the first time.

@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://images/gator_1.svg" type="Texture" id=1]
+[ext_resource path="res://scripts/Gator.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 30.2517
 height = 46.7774
 
 [node name="Gator" type="Area2D"]
+script = ExtResource( 2 )
+MOVE_TIME = 0.8
+POST_MOVE_DELAY_TIME = 1.8
 
 [node name="GatorSprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
