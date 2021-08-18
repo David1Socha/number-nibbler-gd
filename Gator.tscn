@@ -15,10 +15,10 @@ POST_MOVE_DELAY_TIME = 1.8
 [node name="GatorSprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
-offset = Vector2( 30, 15 )
+offset = Vector2( 30, 21 )
 
 [node name="GatorCollision" type="CollisionShape2D" parent="."]
-position = Vector2( 89.5917, 102.672 )
+position = Vector2( 89.592, 108 )
 shape = SubResource( 1 )
 
 [node name="GatorTween" type="Tween" parent="."]

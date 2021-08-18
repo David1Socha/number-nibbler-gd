@@ -21,7 +21,7 @@ public class Level : Node2D
     private Line2D _warningBox;
     private Rect2 _GridRect;
     private TileMap _LilyGrid;
-    private PackedScene _GatorPackedScene;
+    private PackedScene _GatorPackedScene, _FlyPackedScene;
     private Area2D _Gator;
     private Vector2 _spawnWorldLocation;
     private RandomNumberGenerator _random;
@@ -37,8 +37,25 @@ public class Level : Node2D
         _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
         _warningBox = GetNode<Line2D>("SpawnWarningBox");
         _GatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
+        _FlyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
 
+        SpawnAllFlies();
+        //TODO start fly buzz timer/logic
         SpawnEnemyAfterDelay();
+    }
+
+    private void SpawnAllFlies()
+    {
+        for (int i = (int)_GridRect.Position.y; i < (int)_GridRect.End.y; i++)
+        {
+            for (int j = (int)_GridRect.Position.x; j < (int)_GridRect.End.x; j++)
+            {
+                var spawnPosition = _LilyGrid.MapToWorld(new Vector2(j, i));
+                var fly = _FlyPackedScene.Instance<Node2D>();
+                fly.Position = spawnPosition;
+                AddChild(fly);
+            }
+        }
     }
 
     private async void SpawnEnemyAfterDelay()
@@ -61,8 +78,8 @@ public class Level : Node2D
     {
         _spawnWarningSound.Play();
 
-        var spawnGridLocationX = _random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x-1);
-        var spawnGridLocationY = _random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y-1);
+        var spawnGridLocationX = _random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x - 1);
+        var spawnGridLocationY = _random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y - 1);
         _spawnWorldLocation = _LilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
 
         _warningBox.Position = _spawnWorldLocation;
