@@ -58,12 +58,24 @@ public class Frog : Area2D
         {
             _targetDestination = _level.CanMove(currentDestinationOrPosition, new Vector2(1, 0));
         }
+        else if (@event.IsActionPressed("ui_select"))
+        {
+            EatIfAble();
+        }
         else if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
         {
             if (mouseEvent.ButtonIndex == (int)ButtonList.Left)
             {
                 var targetGridCoords = _level.WorldToMap(mouseEvent.Position);
-                _targetDestination = _level.CanMove(targetGridCoords);
+
+                if (targetGridCoords == GridPosition)
+                {
+                    EatIfAble();
+                }
+                else
+                {
+                    _targetDestination = _level.CanMove(targetGridCoords);
+                }
             }
         }
 
@@ -73,6 +85,15 @@ public class Frog : Area2D
             {
                 MoveFrogTowardsTargetDestination();
             }
+        }
+    }
+
+    private void EatIfAble()
+    {
+        if (_readyToProcessNewActions)
+        {
+            GD.Print("omnomnom");
+            //TODO needs more robust consumption behaviour
         }
     }
 
