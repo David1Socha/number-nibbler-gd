@@ -1,145 +1,219 @@
 using Godot;
-using System;
+using NumberNibbler.Scripts.FlyGeneration;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-public class Level : Node2D
+namespace NumberNibbler.Scripts
 {
-    [Export]
-    private readonly float ENEMY_SPAWN_TIME_DELAY_BASE;
-
-    /// <summary>
-    /// added and substracted from base spawn delay to determine range of possible values
-    /// </summary>
-    [Export]
-    private readonly float ENEMY_SPAWN_TIME_DELAY_NOISE;
-
-    [Export]
-    private readonly float ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING;
-
-    [Export]
-    private readonly int MINIMUM_CORRECT_ANSWER_COUNT;
-
-    [Export]
-    private readonly int MAXIMUM_CORRECT_ANSWER_COUNT;
-
-    private float _enemySpawnTimeDelay;
-    private AudioStreamPlayer _spawnWarningSound;
-    private Line2D _warningBox;
-    private Rect2 _GridRect;
-    private TileMap _LilyGrid;
-    private PackedScene _GatorPackedScene, _FlyPackedScene;
-    private Area2D _Gator;
-    private Vector2 _spawnWorldLocation;
-    private RandomNumberGenerator _random;
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public class Level : Node2D
     {
-        _random = new RandomNumberGenerator();
-        _random.Randomize();
+        [Export]
+        private readonly float ENEMY_SPAWN_TIME_DELAY_BASE;
 
-        _LilyGrid = GetNode<TileMap>("LilyGrid");
-        _GridRect = _LilyGrid.GetUsedRect();
-        _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
-        _warningBox = GetNode<Line2D>("SpawnWarningBox");
-        _GatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
-        _FlyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
+        /// <summary>
+        /// added and substracted from base spawn delay to determine range of possible values
+        /// </summary>
+        [Export]
+        private readonly float ENEMY_SPAWN_TIME_DELAY_NOISE;
 
-        SpawnAllFlies();
-        //TODO start fly buzz timer/logic
-        SpawnEnemyAfterDelay();
-    }
+        [Export]
+        private readonly float ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING;
 
-    private void SpawnAllFlies()
-    {
-        var numberOfCorrectAnswersToSpawn = _random.RandiRange(MINIMUM_CORRECT_ANSWER_COUNT, MAXIMUM_CORRECT_ANSWER_COUNT);
-        var addedFlies = new List<Fly>();
+        [Export]
+        private readonly int MINIMUM_CORRECT_ANSWER_COUNT;
 
-        for (int i = (int)_GridRect.Position.y; i < (int)_GridRect.End.y; i++)
+        [Export]
+        private readonly int MAXIMUM_CORRECT_ANSWER_COUNT;
+
+        [Export]
+        private readonly int POINTS_FOR_CORRECT_ANSWER;
+
+        [Export]
+        private readonly int HARD_DIFFICULTY_POINTS_MULTIPLIER; //TODO use this when adding difficulties
+
+        [Export]
+        private readonly string CATEGORY;
+
+        [Export]
+        private readonly string DIFFICULTY_LEVEL;
+
+        private int _score; // TODO add score label
+        private float _enemySpawnTimeDelay;
+        private AudioStreamPlayer _spawnWarningSound, _levelCompleteSound;
+        private Line2D _warningBox;
+        private Rect2 _gridRect;
+        private TileMap _lilyGrid;
+        private PackedScene _gatorPackedScene, _flyPackedScene;
+        private Area2D _gator;
+        private Vector2 _spawnWorldLocation;
+        private RandomNumberGenerator _random;
+        private Fly[][] _flyGrid;
+        private IFlyGenerationStrategy _flyGenerationStrategy;
+
+        // Called when the node enters the scene tree for the first time.
+        public override void _Ready()
         {
-            for (int j = (int)_GridRect.Position.x; j < (int)_GridRect.End.x; j++)
+            _random = new RandomNumberGenerator();
+            _random.Randomize();
+
+            _lilyGrid = GetNode<TileMap>("LilyGrid");
+            _gridRect = _lilyGrid.GetUsedRect();
+            _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
+            _levelCompleteSound = GetNode<AudioStreamPlayer>("LevelCompleteSound");
+            _warningBox = GetNode<Line2D>("SpawnWarningBox");
+            _gatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
+            _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
+
+            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
+            _score = 0;
+            SpawnAllFlies();
+            //TODO start fly buzz timer/logic
+            SpawnEnemyAfterDelay();
+        }
+
+        private void SpawnAllFlies()
+        {
+            var numberOfCorrectAnswersToSpawn = _random.RandiRange(MINIMUM_CORRECT_ANSWER_COUNT, MAXIMUM_CORRECT_ANSWER_COUNT);
+            var addedFlies = new List<Fly>();
+
+            int startCol = (int)_gridRect.Position.x;
+            int startRow = (int)_gridRect.Position.y;
+            int endCol = (int)_gridRect.End.x;
+            int endRow = (int)_gridRect.End.y;
+            _flyGrid = new Fly[endCol][];
+
+            for (int i = startCol; i < endCol; i++)
             {
-                var spawnPosition = _LilyGrid.MapToWorld(new Vector2(j, i));
-                var fly = _FlyPackedScene.Instance<Fly>();
-                fly.Position = spawnPosition;
-                AddChild(fly);
-                addedFlies.Add(fly);
+                _flyGrid[i] = new Fly[endRow];
+                for (int j = startRow; j < endRow; j++)
+                {
+                    var spawnPosition = _lilyGrid.MapToWorld(new Vector2(i, j));
+                    var fly = _flyPackedScene.Instance<Fly>();
+                    fly.Position = spawnPosition;
+                    AddChild(fly);
+                    addedFlies.Add(fly);
+                    _flyGrid[i][j] = fly;
+                }
+            }
+
+            var addedFliesRandomOrder = addedFlies.OrderBy(fly => _random.Randf());
+            foreach (var fly in addedFliesRandomOrder)
+            {
+                if (numberOfCorrectAnswersToSpawn > 0)
+                {
+                    fly.HasCorrectAnswer = true;
+                    fly.Text = _flyGenerationStrategy.GenerateCorrectAnswer();
+                    numberOfCorrectAnswersToSpawn--;
+                }
+                else
+                {
+                    fly.Text = _flyGenerationStrategy.GenerateIncorrectAnswer();
+                }
             }
         }
 
-        var addedFliesRandomOrder = addedFlies.OrderBy(fly => _random.Randf());
-        foreach (var fly in addedFliesRandomOrder)
+        private bool AreAllCorrectFliesEaten()
         {
-            if (numberOfCorrectAnswersToSpawn > 0)
+            return _flyGrid.All(flyRow => flyRow?.All(fly => fly == null || fly.HasCorrectAnswer == false) ?? true);
+        }
+
+        private async void SpawnEnemyAfterDelay()
+        {
+            _enemySpawnTimeDelay = _random.RandfRange(ENEMY_SPAWN_TIME_DELAY_BASE - ENEMY_SPAWN_TIME_DELAY_NOISE, ENEMY_SPAWN_TIME_DELAY_BASE + ENEMY_SPAWN_TIME_DELAY_NOISE);
+            await ToSignal(GetTree().CreateTimer(_enemySpawnTimeDelay), "timeout");
+
+            WarnEnemySpawn();
+
+            await ToSignal(GetTree().CreateTimer(ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING), "timeout");
+
+            _warningBox.QueueFree();
+
+            _gator = _gatorPackedScene.Instance<Area2D>();
+            _gator.Position = _spawnWorldLocation;
+            AddChild(_gator);
+        }
+
+        /// <summary>
+        /// Returns null if no fly was present, false if an incorrect fly was eaten, and true if a correct fly was eaten.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        public bool? AttemptToEatAtLocation(int row, int col)
+        {
+            var flyAtLocation = _flyGrid[row][col];
+            _flyGrid[row][col] = null;
+
+            if (flyAtLocation == null)
             {
-                fly.HasCorrectAnswer = true;
-                fly.Text = "good";
-                numberOfCorrectAnswersToSpawn--;
+                // fly has already been eaten. Do nothing
+                return null;
+            }
+            else if (flyAtLocation.HasCorrectAnswer == false)
+            {
+                GD.Print("bad");
+                flyAtLocation.QueueFree();
+                return false;
             }
             else
             {
-                fly.Text = "bad";
+                var pointsGained = POINTS_FOR_CORRECT_ANSWER * (DIFFICULTY_LEVEL == Global.Difficulties.Hard ? HARD_DIFFICULTY_POINTS_MULTIPLIER : 1);
+                _score += pointsGained;
+                GD.Print($"gained {POINTS_FOR_CORRECT_ANSWER} score!! new score is {_score}");
+
+                flyAtLocation.QueueFree();
+                return true;
             }
         }
-    }
 
-    private async void SpawnEnemyAfterDelay()
-    {
-        _enemySpawnTimeDelay = _random.RandfRange(ENEMY_SPAWN_TIME_DELAY_BASE - ENEMY_SPAWN_TIME_DELAY_NOISE, ENEMY_SPAWN_TIME_DELAY_BASE + ENEMY_SPAWN_TIME_DELAY_NOISE);
-        await ToSignal(GetTree().CreateTimer(_enemySpawnTimeDelay), "timeout");
-
-        WarnEnemySpawn();
-
-        await ToSignal(GetTree().CreateTimer(ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING), "timeout");
-
-        _warningBox.QueueFree();
-
-        _Gator = _GatorPackedScene.Instance<Area2D>();
-        _Gator.Position = _spawnWorldLocation;
-        AddChild(_Gator);
-    }
-
-    private void WarnEnemySpawn()
-    {
-        _spawnWarningSound.Play();
-
-        var spawnGridLocationX = _random.RandiRange((int)_GridRect.Position.x, (int)_GridRect.End.x - 1);
-        var spawnGridLocationY = _random.RandiRange((int)_GridRect.Position.y, (int)_GridRect.End.y - 1);
-        _spawnWorldLocation = _LilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
-
-        _warningBox.Position = _spawnWorldLocation;
-        _warningBox.Visible = true;
-    }
-
-    public Vector2? CanMove(Vector2 currentPos, Vector2 gridMovementDelta)
-    {
-        var currentGridPos = _LilyGrid.WorldToMap(currentPos);
-        var resultingGridPos = currentGridPos + gridMovementDelta;
-        return CanMove(resultingGridPos);
-    }
-
-    public Vector2? CanMove(Vector2 targetGridCoordinates)
-    {
-        bool moveWouldExceedBoundaries = targetGridCoordinates.x < _GridRect.Position.x || targetGridCoordinates.y < _GridRect.Position.y || targetGridCoordinates.x >= _GridRect.End.x || targetGridCoordinates.y >= _GridRect.End.y;
-        if (!moveWouldExceedBoundaries)
+        public void CheckForLevelCompletion()
         {
-            return targetGridCoordinates;
+            if (AreAllCorrectFliesEaten())
+            {
+                _levelCompleteSound.Play();
+            }
         }
-        else
+
+        private void WarnEnemySpawn()
         {
-            return null;
+            _spawnWarningSound.Play();
+
+            var spawnGridLocationX = _random.RandiRange((int)_gridRect.Position.x, (int)_gridRect.End.x - 1);
+            var spawnGridLocationY = _random.RandiRange((int)_gridRect.Position.y, (int)_gridRect.End.y - 1);
+            _spawnWorldLocation = _lilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
+
+            _warningBox.Position = _spawnWorldLocation;
+            _warningBox.Visible = true;
         }
-    }
 
-    public Vector2 WorldToMap(Vector2 worldCoordinates)
-    {
-        return _LilyGrid.WorldToMap(worldCoordinates);
-    }
+        public Vector2? CanMove(Vector2 currentPos, Vector2 gridMovementDelta)
+        {
+            var currentGridPos = _lilyGrid.WorldToMap(currentPos);
+            var resultingGridPos = currentGridPos + gridMovementDelta;
+            return CanMove(resultingGridPos);
+        }
 
-    public Vector2 MapToWorld(Vector2 gridCoordinates)
-    {
-        return _LilyGrid.MapToWorld(gridCoordinates);
+        public Vector2? CanMove(Vector2 targetGridCoordinates)
+        {
+            bool moveWouldExceedBoundaries = targetGridCoordinates.x < _gridRect.Position.x || targetGridCoordinates.y < _gridRect.Position.y || targetGridCoordinates.x >= _gridRect.End.x || targetGridCoordinates.y >= _gridRect.End.y;
+            if (!moveWouldExceedBoundaries)
+            {
+                return targetGridCoordinates;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Vector2 WorldToMap(Vector2 worldCoordinates)
+        {
+            return _lilyGrid.WorldToMap(worldCoordinates);
+        }
+
+        public Vector2 MapToWorld(Vector2 gridCoordinates)
+        {
+            return _lilyGrid.MapToWorld(gridCoordinates);
+        }
     }
 }

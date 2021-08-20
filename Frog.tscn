@@ -1,16 +1,17 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scripts/Frog.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Frog.cs" type="Script" id=1]
 [ext_resource path="res://images/frog_2.svg" type="Texture" id=2]
 [ext_resource path="res://sounds/frog_move.ogg" type="AudioStream" id=3]
 [ext_resource path="res://sounds/frog_damaged.ogg" type="AudioStream" id=4]
 [ext_resource path="res://images/frog_0.svg" type="Texture" id=5]
 [ext_resource path="res://images/frog_1.svg" type="Texture" id=6]
+[ext_resource path="res://sounds/frog_eat.ogg" type="AudioStream" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 2 ), ExtResource( 6 ) ],
-"loop": true,
+"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 5 ) ],
+"loop": false,
 "name": "eat",
 "speed": 5.0
 } ]
@@ -28,6 +29,7 @@ FROG_MOVE_DURATION = 0.5
 position = Vector2( 15.8919, 14.8325 )
 frames = SubResource( 1 )
 animation = "eat"
+frame = 2
 playing = true
 centered = false
 offset = Vector2( 36, 46 )
@@ -44,4 +46,8 @@ stream = ExtResource( 4 )
 [node name="FrogMoveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
+[node name="FrogEatSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
 [connection signal="area_entered" from="." to="." method="OnFrogEntered"]
+[connection signal="animation_finished" from="FrogSprite" to="." method="OnEatAnimationFinished"]
