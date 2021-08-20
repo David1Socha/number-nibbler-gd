@@ -51,7 +51,7 @@ public class Level : Node2D
             for (int j = (int)_GridRect.Position.x; j < (int)_GridRect.End.x; j++)
             {
                 var spawnPosition = _LilyGrid.MapToWorld(new Vector2(j, i));
-                var fly = _FlyPackedScene.Instance<Node2D>();
+                var fly = _FlyPackedScene.Instance<Fly>();
                 fly.Position = spawnPosition;
                 AddChild(fly);
             }
