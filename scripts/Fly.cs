@@ -3,19 +3,13 @@ using System;
 
 public class Fly : Node2D
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
+    public bool HasCorrectAnswer { get; set; }
+    public string Text { get { return _label.Text; } set { _label.Text = value; } }
 
-    // Called when the node enters the scene tree for the first time.
+    private Label _label;
+
     public override void _Ready()
     {
-
+        _label = GetNode<Label>("Label");
     }
-
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //      
-    //  }
 }

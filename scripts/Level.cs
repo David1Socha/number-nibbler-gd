@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class Level : Node2D
@@ -15,6 +17,12 @@ public class Level : Node2D
 
     [Export]
     private readonly float ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING;
+
+    [Export]
+    private readonly int MINIMUM_CORRECT_ANSWER_COUNT;
+
+    [Export]
+    private readonly int MAXIMUM_CORRECT_ANSWER_COUNT;
 
     private float _enemySpawnTimeDelay;
     private AudioStreamPlayer _spawnWarningSound;
@@ -46,6 +54,9 @@ public class Level : Node2D
 
     private void SpawnAllFlies()
     {
+        var numberOfCorrectAnswersToSpawn = _random.RandiRange(MINIMUM_CORRECT_ANSWER_COUNT, MAXIMUM_CORRECT_ANSWER_COUNT);
+        var addedFlies = new List<Fly>();
+
         for (int i = (int)_GridRect.Position.y; i < (int)_GridRect.End.y; i++)
         {
             for (int j = (int)_GridRect.Position.x; j < (int)_GridRect.End.x; j++)
@@ -54,6 +65,22 @@ public class Level : Node2D
                 var fly = _FlyPackedScene.Instance<Fly>();
                 fly.Position = spawnPosition;
                 AddChild(fly);
+                addedFlies.Add(fly);
+            }
+        }
+
+        var addedFliesRandomOrder = addedFlies.OrderBy(fly => _random.Randf());
+        foreach (var fly in addedFliesRandomOrder)
+        {
+            if (numberOfCorrectAnswersToSpawn > 0)
+            {
+                fly.HasCorrectAnswer = true;
+                fly.Text = "good";
+                numberOfCorrectAnswersToSpawn--;
+            }
+            else
+            {
+                fly.Text = "bad";
             }
         }
     }

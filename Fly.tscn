@@ -10,3 +10,15 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( 24, 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 48.0379
+margin_top = 46.7197
+margin_right = 117.038
+margin_bottom = 63.7197
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "aaa"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
