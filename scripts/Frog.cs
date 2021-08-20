@@ -97,10 +97,10 @@ namespace NumberNibbler.Scripts
         {
             if (_readyToProcessNewActions)
             {
-                _readyToProcessNewActions = false;
                 var eatResult = _level.AttemptToEatAtLocation((int)GridPosition.x, (int)GridPosition.y);
                 if (eatResult != null)
                 {
+                    _readyToProcessNewActions = false;
                     _animSprite.Frame = 0;
                     _animSprite.Play();
                     _frogEatSound.Play();
