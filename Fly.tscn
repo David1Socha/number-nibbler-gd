@@ -1,12 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://images/fly.svg" type="Texture" id=1]
 [ext_resource path="res://Scripts/Fly.cs" type="Script" id=2]
-[ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=3]
-
-[sub_resource type="DynamicFont" id=1]
-size = 18
-font_data = ExtResource( 3 )
+[ext_resource path="res://fonts/FlyAnswerFont.tres" type="DynamicFont" id=3]
 
 [node name="Fly" type="Node2D"]
 script = ExtResource( 2 )
@@ -21,7 +17,7 @@ margin_left = 47.3333
 margin_top = 44.1667
 margin_right = 117.333
 margin_bottom = 67.1667
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "bzzz"
 align = 1
