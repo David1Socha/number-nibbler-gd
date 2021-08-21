@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scripts/Level.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sounds/level_warning.ogg" type="AudioStream" id=3]
+[ext_resource path="res://sounds/level_complete.ogg" type="AudioStream" id=4]
 [ext_resource path="res://level.tres" type="TileSet" id=5]
 [ext_resource path="res://images/bg_water.svg" type="Texture" id=6]
 
@@ -11,6 +12,12 @@ script = ExtResource( 1 )
 ENEMY_SPAWN_TIME_DELAY_BASE = 4.0
 ENEMY_SPAWN_TIME_DELAY_NOISE = 1.0
 ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING = 3.0
+MINIMUM_CORRECT_ANSWER_COUNT = 5
+MAXIMUM_CORRECT_ANSWER_COUNT = 11
+POINTS_FOR_CORRECT_ANSWER = 5
+HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
+CATEGORY = "Subtraction"
+DIFFICULTY_LEVEL = "Hard"
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
@@ -28,8 +35,12 @@ position = Vector2( 540, 360 )
 
 [node name="SpawnWarningBox" type="Line2D" parent="."]
 visible = false
+z_index = 1
 points = PoolVector2Array( 5, 5, 5, 175, 175, 175, 175, 5, 0, 5 )
 default_color = Color( 0.839216, 0, 0, 1 )
 
 [node name="SpawnWarningSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="LevelCompleteSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )

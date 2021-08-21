@@ -1,10 +1,24 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://images/fly.svg" type="Texture" id=1]
+[ext_resource path="res://Scripts/Fly.cs" type="Script" id=2]
 
 [node name="Fly" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="FlySprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 centered = false
 offset = Vector2( 24, 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 48.0379
+margin_top = 46.7197
+margin_right = 117.038
+margin_bottom = 63.7197
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "aaa"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
