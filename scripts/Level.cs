@@ -31,10 +31,10 @@ namespace NumberNibbler.Scripts
         [Export]
         private readonly int HARD_DIFFICULTY_POINTS_MULTIPLIER; //TODO use this when adding difficulties
 
-        [Export]
+        [Export(PropertyHint.Enum, "Addition,Subtraction,Multiplication,Division,Multiples,Basic")]
         private readonly string CATEGORY;
 
-        [Export]
+        [Export(PropertyHint.Enum, "Easy,Hard")]
         private readonly string DIFFICULTY_LEVEL;
 
         private int _score; // TODO add score label
