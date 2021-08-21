@@ -24,6 +24,7 @@ height = 23.4872
 position = Vector2( 540, 540 )
 script = ExtResource( 1 )
 FROG_MOVE_DURATION = 0.5
+FROG_STARTING_HEALTH = 3
 
 [node name="FrogSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 15.8919, 14.8325 )

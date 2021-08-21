@@ -94,7 +94,16 @@ namespace NumberNibbler.Scripts
             _currentTimeRemaining -= delta;
             EmitSignal("TimeLeftChanged", (int)_currentTimeRemaining);
 
-            // TODO trigger game over when time less than or equal to 0
+            if (_currentTimeRemaining <= 0)
+            {
+                TriggerGameOver();
+            }
+        }
+
+        private void TriggerGameOver()
+        {
+            GD.Print("Game Over");
+            // TODO transition to game over scene ??
         }
 
         private void SpawnAllFlies()
@@ -241,6 +250,14 @@ namespace NumberNibbler.Scripts
         public Vector2 MapToWorld(Vector2 gridCoordinates)
         {
             return _lilyGrid.MapToWorld(gridCoordinates);
+        }
+
+        public void OnFrogHealthChanged(int frogHealth)
+        {
+            if (frogHealth <= 0)
+            {
+                TriggerGameOver();
+            }
         }
     }
 }

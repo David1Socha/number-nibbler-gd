@@ -11,17 +11,23 @@ namespace NumberNibbler.Scripts
         private AudioStreamPlayer _frogMoveSound, _frogDamagedSound, _frogEatSound;
         private Vector2? _targetDestination;
         private AnimatedSprite _animSprite;
+        private int _health;
 
         private Vector2 GridPosition { get { return _level.WorldToMap(Position); } }
 
         [Export]
         private readonly float FROG_MOVE_DURATION;
+        [Export]
+        private readonly int FROG_STARTING_HEALTH;
         private float FROG_DIAG_MOVE_DURATION { get { return FROG_MOVE_DURATION * (float)Math.Sqrt(2); } } // a^2 + b^2 = c^2 ; therefore diagonal distance == sqrt(2) * horizontal distance
 
-        // Called when the node enters the scene tree for the first time.
+        [Signal]
+        public delegate void FrogHealthChanged(int health);
+
         public override void _Ready()
         {
             _readyToProcessNewActions = true;
+            _health = FROG_STARTING_HEALTH;
 
             _level = GetParent<Level>();
             _animSprite = GetNode<AnimatedSprite>("FrogSprite");
@@ -30,16 +36,6 @@ namespace NumberNibbler.Scripts
             _frogMoveSound = GetNode<AudioStreamPlayer>("FrogMoveSound");
             _frogDamagedSound = GetNode<AudioStreamPlayer>("FrogDamagedSound");
             _frogEatSound = GetNode<AudioStreamPlayer>("FrogEatSound");
-        }
-
-        // Called every frame. 'delta' is the elapsed time since the previous frame.
-        public override void _Process(float delta)
-        {
-
-            // TODO - click based movement, queueing movements longer than 1 step, and diagonal moves
-
-
-            // TODO add eating logic
         }
 
         public override void _Input(InputEvent @event)
@@ -101,10 +97,19 @@ namespace NumberNibbler.Scripts
                 var eatResult = _level.AttemptToEatAtLocation((int)GridPosition.x, (int)GridPosition.y);
                 if (eatResult != null)
                 {
+                    bool ateBadFly = eatResult == false;
+                    if (ateBadFly)
+                    {
+                        OnFrogDamaged();
+                    }
+                    else
+                    {
+                        _frogEatSound.Play();
+                    }
+
                     _readyToProcessNewActions = false;
                     _animSprite.Frame = 0;
                     _animSprite.Play();
-                    _frogEatSound.Play();
                 }
             }
         }
@@ -174,8 +179,15 @@ namespace NumberNibbler.Scripts
 
         public void OnFrogEntered(Area2D other)
         {
+            OnFrogDamaged();
+        }
+
+        private void OnFrogDamaged()
+        {
             _frogDamagedSound.Play();
-            GD.Print("game over !"); // TODO rm this, add gameover/hp loss logic
+
+            _health -= 1;
+            EmitSignal("FrogHealthChanged", _health);
         }
     }
 }
