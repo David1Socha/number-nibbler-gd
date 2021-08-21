@@ -25,6 +25,7 @@ namespace NumberNibbler.Scripts
 
             _level = GetParent<Level>();
             _animSprite = GetNode<AnimatedSprite>("FrogSprite");
+            _animSprite.Frame = 2;
             _frogTween = GetNode<Tween>("FrogTween");
             _frogMoveSound = GetNode<AudioStreamPlayer>("FrogMoveSound");
             _frogDamagedSound = GetNode<AudioStreamPlayer>("FrogDamagedSound");

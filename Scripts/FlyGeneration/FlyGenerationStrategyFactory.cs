@@ -16,6 +16,8 @@ namespace NumberNibbler.Scripts.FlyGeneration
                     return new AdditionFlyGenerationStrategy(difficultyName);
                 case "Subtraction":
                     return new SubtractionFlyGenerationStrategy(difficultyName);
+                case "Multiplication":
+                    return new MultiplicationFlyGenerationStrategy(difficultyName);
                 case "Basic":
                 default:
                     return new BasicFlyGenerationStrategy();
