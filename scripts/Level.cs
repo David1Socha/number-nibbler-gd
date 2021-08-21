@@ -1,5 +1,6 @@
 using Godot;
 using NumberNibbler.Scripts.FlyGeneration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +30,9 @@ namespace NumberNibbler.Scripts
         private readonly int POINTS_FOR_CORRECT_ANSWER;
 
         [Export]
+        private readonly int POINTS_LOST_FOR_WRONG_ANSWER;
+
+        [Export]
         private readonly int HARD_DIFFICULTY_POINTS_MULTIPLIER; //TODO use this when adding difficulties
 
         [Export(PropertyHint.Enum, "Addition,Subtraction,Multiplication,Division,Multiples,Basic")]
@@ -50,7 +54,7 @@ namespace NumberNibbler.Scripts
         public delegate void PromptChanged(string prompt);
 
         private int _score;
-        private float _currentTimeLimit, _currentTimeRemaining;
+        private float _currentTimeLimit, _timeRemaining;
         private float _enemySpawnTimeDelay;
         private AudioStreamPlayer _spawnWarningSound, _levelCompleteSound;
         private Line2D _warningBox;
@@ -79,11 +83,15 @@ namespace NumberNibbler.Scripts
 
             _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
             EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
+
             _score = 0;
+            UpdateScore(0);
+
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
-            _currentTimeRemaining = _currentTimeLimit;
+            _timeRemaining = _currentTimeLimit;
+
             SpawnAllFlies();
-            //TODO start fly buzz timer/logic
+            //TODO start fly buzz timer/logic here ??
             SpawnEnemyAfterDelay();
         }
 
@@ -91,10 +99,10 @@ namespace NumberNibbler.Scripts
         {
             base._Process(delta);
 
-            _currentTimeRemaining -= delta;
-            EmitSignal("TimeLeftChanged", (int)_currentTimeRemaining);
+            _timeRemaining -= delta;
+            EmitSignal("TimeLeftChanged", (int)_timeRemaining);
 
-            if (_currentTimeRemaining <= 0)
+            if (_timeRemaining <= 0)
             {
                 TriggerGameOver();
             }
@@ -186,19 +194,27 @@ namespace NumberNibbler.Scripts
             }
             else if (flyAtLocation.HasCorrectAnswer == false)
             {
-                GD.Print("bad");
+                UpdateScore(-POINTS_LOST_FOR_WRONG_ANSWER);
                 flyAtLocation.QueueFree();
                 return false;
             }
             else
             {
                 var pointsGained = POINTS_FOR_CORRECT_ANSWER * (DIFFICULTY_LEVEL == Global.Difficulties.Hard ? HARD_DIFFICULTY_POINTS_MULTIPLIER : 1);
-                _score += pointsGained;
-                EmitSignal("ScoreChanged", _score);
+                UpdateScore(pointsGained);
 
                 flyAtLocation.QueueFree();
                 return true;
             }
+        }
+
+        private void UpdateScore(int delta)
+        {
+            _score += delta;
+            // don't let scores go negative (that would be mean...)
+            _score = Math.Min(0, _score);
+
+            EmitSignal("ScoreChanged", _score);
         }
 
         public void CheckForLevelCompletion()
@@ -206,7 +222,9 @@ namespace NumberNibbler.Scripts
             if (AreAllCorrectFliesEaten())
             {
                 _levelCompleteSound.Play();
-                // TODO add remaining time to score ??
+                int pointsGainedFromExtraTime = (int)_timeRemaining;
+                UpdateScore(pointsGainedFromExtraTime);
+                // TODO transition to next level...
             }
         }
 

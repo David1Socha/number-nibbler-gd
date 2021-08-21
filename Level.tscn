@@ -21,6 +21,7 @@ ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING = 3.0
 MINIMUM_CORRECT_ANSWER_COUNT = 5
 MAXIMUM_CORRECT_ANSWER_COUNT = 11
 POINTS_FOR_CORRECT_ANSWER = 5
+POINTS_LOST_FOR_WRONG_ANSWER = 10
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
 CATEGORY = "Basic"
 DIFFICULTY_LEVEL = "Easy"
@@ -84,9 +85,10 @@ custom_constants/separation = 340
 
 [node name="HealthTextureRect" type="TextureRect" parent="InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 344.0
-margin_right = 340.0
+margin_right = 336.0
 margin_bottom = 456.0
-rect_min_size = Vector2( 0, 112 )
+rect_min_size = Vector2( 336, 112 )
+size_flags_horizontal = 0
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 2

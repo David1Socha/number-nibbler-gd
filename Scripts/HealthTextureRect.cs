@@ -6,7 +6,7 @@ namespace NumberNibbler.Scripts
     {
         public void OnFrogHealthChanged(int health)
         {
-            RectSize = new Vector2(health * Texture.GetWidth(), RectSize.y);
+            RectMinSize = new Vector2(health * Texture.GetWidth(), RectMinSize.y);
         }
     }
 }
