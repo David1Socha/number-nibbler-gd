@@ -53,11 +53,14 @@ namespace NumberNibbler.Scripts
         [Signal]
         public delegate void PromptChanged(string prompt);
 
+        [Signal]
+        public delegate void DangerChanged(bool danger);
+
         private int _score;
         private float _currentTimeLimit, _timeRemaining;
         private float _enemySpawnTimeDelay;
         private AudioStreamPlayer _spawnWarningSound, _levelCompleteSound;
-        private Line2D _warningBox;
+        private Line2D _spawnWarningBox;
         private Rect2 _gridRect;
         private TileMap _lilyGrid;
         private PackedScene _gatorPackedScene, _flyPackedScene;
@@ -66,6 +69,7 @@ namespace NumberNibbler.Scripts
         private RandomNumberGenerator _random;
         private Fly[][] _flyGrid;
         private IFlyGenerationStrategy _flyGenerationStrategy;
+        private bool _isDanger;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -77,7 +81,7 @@ namespace NumberNibbler.Scripts
             _gridRect = _lilyGrid.GetUsedRect();
             _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
             _levelCompleteSound = GetNode<AudioStreamPlayer>("LevelCompleteSound");
-            _warningBox = GetNode<Line2D>("SpawnWarningBox");
+            _spawnWarningBox = GetNode<Line2D>("SpawnWarningBox");
             _gatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
             _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
 
@@ -86,6 +90,8 @@ namespace NumberNibbler.Scripts
 
             _score = 0;
             UpdateScore(0);
+
+            UpdateDanger(danger: false);
 
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
             _timeRemaining = _currentTimeLimit;
@@ -101,6 +107,12 @@ namespace NumberNibbler.Scripts
 
             _timeRemaining -= delta;
             EmitSignal("TimeLeftChanged", (int)_timeRemaining);
+
+            if (_timeRemaining <= 10 && _isDanger == false)
+            {
+                _isDanger = true;
+                //TODO draw danger box around timer
+            }
 
             if (_timeRemaining <= 0)
             {
@@ -169,7 +181,8 @@ namespace NumberNibbler.Scripts
 
             await ToSignal(GetTree().CreateTimer(ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING), "timeout");
 
-            _warningBox.QueueFree();
+            UpdateDanger(danger: false);
+            _spawnWarningBox.QueueFree();
 
             _gator = _gatorPackedScene.Instance<Area2D>();
             _gator.Position = _spawnWorldLocation;
@@ -217,6 +230,12 @@ namespace NumberNibbler.Scripts
             EmitSignal("ScoreChanged", _score);
         }
 
+        private void UpdateDanger(bool danger)
+        {
+            _isDanger = danger;
+            EmitSignal("DangerChanged", _isDanger);
+        }
+
         public void CheckForLevelCompletion()
         {
             if (AreAllCorrectFliesEaten())
@@ -236,8 +255,9 @@ namespace NumberNibbler.Scripts
             var spawnGridLocationY = _random.RandiRange((int)_gridRect.Position.y, (int)_gridRect.End.y - 1);
             _spawnWorldLocation = _lilyGrid.MapToWorld(new Vector2(spawnGridLocationX, spawnGridLocationY));
 
-            _warningBox.Position = _spawnWorldLocation;
-            _warningBox.Visible = true;
+            UpdateDanger(danger: true);
+            _spawnWarningBox.Position = _spawnWorldLocation;
+            _spawnWarningBox.Visible = true;
         }
 
         public Vector2? CanMove(Vector2 currentPos, Vector2 gridMovementDelta)

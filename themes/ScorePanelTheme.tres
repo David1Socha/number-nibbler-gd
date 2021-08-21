@@ -1,7 +1,9 @@
-[gd_resource type="Theme" load_steps=4 format=2]
+[gd_resource type="Theme" load_steps=5 format=2]
 
 [ext_resource path="res://fonts/ScorePanelFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://themes/ButtonColor.tres" type="StyleBox" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 0.6, 1 )
@@ -19,6 +21,8 @@ Button/styles/focus = ExtResource( 2 )
 Button/styles/hover = ExtResource( 2 )
 Button/styles/normal = ExtResource( 2 )
 Button/styles/pressed = ExtResource( 2 )
+HSeparator/constants/separation = 4
+HSeparator/styles/separator = SubResource( 2 )
 Label/colors/font_color = Color( 0, 0, 0, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
