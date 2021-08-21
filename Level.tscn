@@ -146,10 +146,10 @@ size_flags_vertical = 1
 text = "Score : 0"
 script = ExtResource( 7 )
 
-[connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnDangerChanged"]
 [connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
 [connection signal="PromptChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
 [connection signal="ScoreChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
 [connection signal="TimeLeftChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
+[connection signal="TimeLowChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLowChanged"]
 [connection signal="FrogHealthChanged" from="Frog" to="." method="OnFrogHealthChanged"]
 [connection signal="FrogHealthChanged" from="Frog" to="InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]

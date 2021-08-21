@@ -19,9 +19,9 @@ namespace NumberNibbler.Scripts
             Text = $"Time : {time}";
         }
 
-        public void OnDangerChanged(bool danger)
+        public void OnTimeLowChanged(bool isTimeLow)
         {
-            _styleBox.BorderColor = danger ? _danger : _clear;
+            _styleBox.BorderColor = isTimeLow ? _danger : _clear;
         }
     }
 }

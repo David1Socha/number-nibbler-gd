@@ -56,6 +56,9 @@ namespace NumberNibbler.Scripts
         [Signal]
         public delegate void DangerChanged(bool danger);
 
+        [Signal]
+        public delegate void TimeLowChanged(bool isTimeLow);
+
         private int _score;
         private float _currentTimeLimit, _timeRemaining;
         private float _enemySpawnTimeDelay;
@@ -92,6 +95,7 @@ namespace NumberNibbler.Scripts
             UpdateScore(0);
 
             UpdateDanger(danger: false);
+            EmitSignal("TimeLowChanged", false);
 
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
             _timeRemaining = _currentTimeLimit;
@@ -113,7 +117,7 @@ namespace NumberNibbler.Scripts
             if (_timeRemaining < TimeLeftBeforeWarningShown && _isDanger == false)
             {
                 UpdateDanger(danger: true);
-                //TODO draw danger box around timer
+                EmitSignal("TimeLowChanged", true);
             }
 
             if (_timeRemaining <= 0)
