@@ -108,9 +108,11 @@ namespace NumberNibbler.Scripts
             _timeRemaining -= delta;
             EmitSignal("TimeLeftChanged", (int)_timeRemaining);
 
-            if (_timeRemaining <= 10 && _isDanger == false)
+            const float TimeLeftBeforeWarningShown = 11f;
+
+            if (_timeRemaining < TimeLeftBeforeWarningShown && _isDanger == false)
             {
-                _isDanger = true;
+                UpdateDanger(danger: true);
                 //TODO draw danger box around timer
             }
 
