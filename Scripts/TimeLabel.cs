@@ -4,14 +4,24 @@ namespace NumberNibbler.Scripts
 {
     public class TimeLabel : Label
     {
+        private readonly Color _clear = new Color(0, 0, 0, 0);
+        private Color _danger;
+        private StyleBoxFlat _styleBox;
+
         public override void _Ready()
         {
-
+            _styleBox = GetStylebox("normal") as StyleBoxFlat;
+            _danger = _styleBox.BorderColor;
         }
 
         public void OnTimeLeftChanged(int time)
         {
             Text = $"Time : {time}";
+        }
+
+        public void OnDangerChanged(bool danger)
+        {
+            _styleBox.BorderColor = danger ? _danger : _clear;
         }
     }
 }

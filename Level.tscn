@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://images/heart.svg" type="Texture" id=11]
 [ext_resource path="res://Scripts/HealthTextureRect.cs" type="Script" id=12]
 [ext_resource path="res://Scripts/DangerLabel.cs" type="Script" id=13]
+[ext_resource path="res://themes/TimeLabelStyleBox.tres" type="StyleBox" id=14]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -98,23 +99,23 @@ script = ExtResource( 12 )
 [node name="HSeparator" type="HSeparator" parent="InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 200.0
 margin_right = 340.0
-margin_bottom = 360.0
+margin_bottom = 350.0
 size_flags_vertical = 0
-custom_constants/separation = 160
+custom_constants/separation = 150
 
 [node name="DangerLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
-margin_top = 364.0
+margin_top = 354.0
 margin_right = 340.0
-margin_bottom = 430.0
+margin_bottom = 420.0
 custom_colors/font_color = Color( 0.839216, 0, 0, 1 )
 text = "DANGER"
 uppercase = true
 script = ExtResource( 13 )
 
 [node name="PromptLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
-margin_top = 434.0
+margin_top = 424.0
 margin_right = 340.0
-margin_bottom = 500.0
+margin_bottom = 490.0
 size_flags_vertical = 1
 text = "Catch Flies!!"
 script = ExtResource( 10 )
@@ -123,27 +124,29 @@ __meta__ = {
 }
 
 [node name="TimeLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
-margin_top = 504.0
+margin_top = 494.0
 margin_right = 340.0
-margin_bottom = 570.0
+margin_bottom = 560.0
 size_flags_vertical = 1
+custom_styles/normal = ExtResource( 14 )
 text = "Time : 60"
 script = ExtResource( 9 )
 
 [node name="LevelLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
-margin_top = 574.0
+margin_top = 564.0
 margin_right = 340.0
-margin_bottom = 640.0
+margin_bottom = 630.0
 text = "Level : 1"
 
 [node name="ScoreLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
-margin_top = 644.0
+margin_top = 634.0
 margin_right = 340.0
-margin_bottom = 710.0
+margin_bottom = 700.0
 size_flags_vertical = 1
 text = "Score : 0"
 script = ExtResource( 7 )
 
+[connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnDangerChanged"]
 [connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
 [connection signal="PromptChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
 [connection signal="ScoreChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
