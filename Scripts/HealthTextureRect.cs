@@ -6,8 +6,7 @@ namespace NumberNibbler.Scripts
     {
         public void OnFrogHealthChanged(int health)
         {
-            GD.Print($"received health update in ui!! {health}");
-            // TODO set width to tileSize * health
+            RectSize = new Vector2(health * Texture.GetWidth(), RectSize.y);
         }
     }
 }

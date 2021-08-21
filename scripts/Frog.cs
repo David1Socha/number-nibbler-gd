@@ -28,6 +28,7 @@ namespace NumberNibbler.Scripts
         {
             _readyToProcessNewActions = true;
             _health = FROG_STARTING_HEALTH;
+            EmitSignal("FrogHealthChanged", _health);
 
             _level = GetParent<Level>();
             _animSprite = GetNode<AnimatedSprite>("FrogSprite");
