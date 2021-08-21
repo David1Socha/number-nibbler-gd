@@ -20,7 +20,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
 
         public string GetPrompt()
         {
-            return "Pick good flies";
+            return "Catch Flies!!";
         }
     }
 }

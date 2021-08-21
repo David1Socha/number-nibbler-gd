@@ -46,6 +46,9 @@ namespace NumberNibbler.Scripts
         [Signal]
         public delegate void TimeLeftChanged(int time);
 
+        [Signal]
+        public delegate void PromptChanged(string prompt);
+
         private int _score;
         private float _currentTimeLimit, _currentTimeRemaining;
         private float _enemySpawnTimeDelay;
@@ -75,6 +78,7 @@ namespace NumberNibbler.Scripts
             _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
 
             _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
+            EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
             _score = 0;
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
             _currentTimeRemaining = _currentTimeLimit;
@@ -88,7 +92,7 @@ namespace NumberNibbler.Scripts
             base._Process(delta);
 
             _currentTimeRemaining -= delta;
-            EmitSignal("TimeLeftChanged", _currentTimeRemaining);
+            EmitSignal("TimeLeftChanged", (int)_currentTimeRemaining);
 
             // TODO trigger game over when time less than or equal to 0
         }

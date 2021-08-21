@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scripts/ScoreLabel.cs" type="Script" id=7]
 [ext_resource path="res://themes/ScorePanelTheme.tres" type="Theme" id=8]
 [ext_resource path="res://Scripts/TimeLabel.cs" type="Script" id=9]
+[ext_resource path="res://Scripts/PromptLabel.cs" type="Script" id=10]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -19,8 +20,8 @@ MINIMUM_CORRECT_ANSWER_COUNT = 5
 MAXIMUM_CORRECT_ANSWER_COUNT = 11
 POINTS_FOR_CORRECT_ANSWER = 5
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
-CATEGORY = "Subtraction"
-DIFFICULTY_LEVEL = "Hard"
+CATEGORY = "Basic"
+DIFFICULTY_LEVEL = "Easy"
 INITIAL_TIME_LIMIT = 60
 
 [node name="Background" type="Sprite" parent="."]
@@ -73,21 +74,33 @@ margin_bottom = 400.0
 size_flags_vertical = 0
 custom_constants/separation = 400
 
-[node name="TimeLabel" type="Label" parent="InfoPanel/PanelContainer/VBoxContainer"]
+[node name="PromptLabel" type="Label" parent="InfoPanel/PanelContainer/VBoxContainer"]
 margin_top = 404.0
 margin_right = 360.0
 margin_bottom = 464.0
+size_flags_vertical = 1
+text = "Catch Flies!!"
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLabel" type="Label" parent="InfoPanel/PanelContainer/VBoxContainer"]
+margin_top = 468.0
+margin_right = 360.0
+margin_bottom = 528.0
 size_flags_vertical = 1
 text = "Time : 60"
 script = ExtResource( 9 )
 
 [node name="ScoreLabel" type="Label" parent="InfoPanel/PanelContainer/VBoxContainer"]
-margin_top = 468.0
+margin_top = 532.0
 margin_right = 360.0
-margin_bottom = 528.0
+margin_bottom = 592.0
 size_flags_vertical = 1
 text = "Score : 0"
 script = ExtResource( 7 )
 
+[connection signal="PromptChanged" from="." to="InfoPanel/PanelContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
 [connection signal="ScoreChanged" from="." to="InfoPanel/PanelContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
 [connection signal="TimeLeftChanged" from="." to="InfoPanel/PanelContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
