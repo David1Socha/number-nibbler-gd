@@ -212,7 +212,7 @@ namespace NumberNibbler.Scripts
         {
             _score += delta;
             // don't let scores go negative (that would be mean...)
-            _score = Math.Min(0, _score);
+            _score = Math.Max(0, _score);
 
             EmitSignal("ScoreChanged", _score);
         }
