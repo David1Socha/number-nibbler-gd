@@ -12,9 +12,13 @@ namespace NumberNibbler.Scripts
         [Export]
         private readonly float POST_MOVE_DELAY_TIME;
 
+        [Export]
+        private readonly int GATOR_COLOR_OPTIONS;
+
         private Tween _gatorTween;
         private Level _level;
         private RandomNumberGenerator _random;
+        private AnimatedSprite _sprite;
 
         private readonly Vector2[] PossibleMoveDeltas = new Vector2[] { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(1, 1), new Vector2(1, -1), new Vector2(0, 1), new Vector2(0, -1), new Vector2(-1, -1), new Vector2(-1, 1) };
 
@@ -22,9 +26,12 @@ namespace NumberNibbler.Scripts
         {
             _level = GetParent<Level>();
             _gatorTween = GetNode<Tween>("GatorTween");
+            _sprite = GetNode<AnimatedSprite>("GatorSprite");
 
             _random = new RandomNumberGenerator();
             _random.Randomize();
+
+            _sprite.Frame = _random.RandiRange(0, GATOR_COLOR_OPTIONS - 1);
 
             QueueRandomMoveAfterDelay();
         }

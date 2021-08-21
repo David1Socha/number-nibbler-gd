@@ -1,10 +1,12 @@
 ﻿using Godot;
+using System;
 using System.Collections.Generic;
 
 namespace NumberNibbler.Scripts.FlyGeneration
 {
-    public class SubtractionFlyGenerationStrategy : FlyGenerationStrategyBase
+    public class DivisionFlyGenerationStrategy : FlyGenerationStrategyBase
     {
+        // since we override GetRandomAnswer, this doesn't really do anything...
         protected override Dictionary<string, (int minAnswer, int maxAnswer)> AnswerRanges
         {
             get
@@ -12,12 +14,12 @@ namespace NumberNibbler.Scripts.FlyGeneration
                 return new Dictionary<string, (int minAnswer, int maxAnswer)>()
                 {
                     { Global.Difficulties.Easy, (minAnswer: 2, maxAnswer: 8) },
-                    { Global.Difficulties.Hard, (minAnswer: 5, maxAnswer: 15) }
+                    { Global.Difficulties.Hard, (minAnswer: 6, maxAnswer: 15) }
                 };
             }
         }
 
-        public SubtractionFlyGenerationStrategy(string difficulty) : base(difficulty)
+        public DivisionFlyGenerationStrategy(string difficulty) : base(difficulty)
         {
         }
 
@@ -25,10 +27,10 @@ namespace NumberNibbler.Scripts.FlyGeneration
         {
             var correctAnswers = new List<(int term1, int? term2)>();
 
-            for (int minuend = answer + 1; minuend < answer + (_difficulty == Global.Difficulties.Easy ? 6 : 10); minuend++)
+            for (int denominator = 2; denominator <= 9; denominator++)
             {
-                int subtrahend = minuend - answer;
-                correctAnswers.Add((term1: minuend, term2: subtrahend));
+                int numerator = answer * denominator;
+                correctAnswers.Add((term1: numerator, term2: denominator));
             }
 
             return correctAnswers;
@@ -46,7 +48,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
                     for (int j = answerTerms.term2.Value - INCORRECT_ANSWER_NEGATIVE_DELTA; j <= answerTerms.term2 + INCORRECT_ANSWER_POSITIVE_DELTA; j++)
                     {
                         // coherence checks, don't want to give negative terms or give an "incorrect" answer that's actually right
-                        if (i > 0 && j > 0 && i - j != answer)
+                        if (i > 0 && j > 0 && i / j != answer)
                         {
                             incorrectAnswers.Add((term1: i, term2: j));
                         }
@@ -59,7 +61,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
 
         protected override string ConvertAnswerPoolValueToAnswer((int term1, int? term2) answer)
         {
-            return $"{answer.term1} − {answer.term2}";
+            return $"{answer.term1} ÷ {answer.term2}";
         }
     }
 }

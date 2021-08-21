@@ -18,15 +18,20 @@ namespace NumberNibbler.Scripts.FlyGeneration
             _random.Randomize();
 
             var answerRangeForSelectedDifficulty = AnswerRanges[difficulty];
-            _answer = _random.RandiRange(answerRangeForSelectedDifficulty.minAnswer, answerRangeForSelectedDifficulty.maxAnswer);
             _difficulty = difficulty;
 
+            _answer = 13;
             _correctAnswers = GenerateCorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
             _incorrectAnswers = GenerateIncorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
         }
 
+        protected virtual int GetRandomAnswer(int minAnswer, int maxAnswer)
+        {
+            return _random.RandiRange(minAnswer, maxAnswer);
+        }
+
         protected abstract Dictionary<string, (int minAnswer, int maxAnswer)> AnswerRanges { get; }
-        public string GetPrompt()
+        public virtual string GetPrompt()
         {
             return $"Make {_answer}";
         }

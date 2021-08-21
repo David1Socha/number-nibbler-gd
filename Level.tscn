@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -6,6 +6,14 @@
 [ext_resource path="res://sounds/level_complete.ogg" type="AudioStream" id=4]
 [ext_resource path="res://level.tres" type="TileSet" id=5]
 [ext_resource path="res://images/bg_water.svg" type="Texture" id=6]
+[ext_resource path="res://Scripts/ScoreLabel.cs" type="Script" id=7]
+[ext_resource path="res://themes/ScorePanelTheme.tres" type="Theme" id=8]
+[ext_resource path="res://Scripts/TimeLabel.cs" type="Script" id=9]
+[ext_resource path="res://Scripts/PromptLabel.cs" type="Script" id=10]
+[ext_resource path="res://images/heart.svg" type="Texture" id=11]
+[ext_resource path="res://Scripts/HealthTextureRect.cs" type="Script" id=12]
+[ext_resource path="res://Scripts/DangerLabel.cs" type="Script" id=13]
+[ext_resource path="res://themes/TimeLabelStyleBox.tres" type="StyleBox" id=14]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -15,9 +23,11 @@ ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING = 3.0
 MINIMUM_CORRECT_ANSWER_COUNT = 5
 MAXIMUM_CORRECT_ANSWER_COUNT = 11
 POINTS_FOR_CORRECT_ANSWER = 5
+POINTS_LOST_FOR_WRONG_ANSWER = 10
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
-CATEGORY = "Subtraction"
-DIFFICULTY_LEVEL = "Hard"
+CATEGORY = "Basic"
+DIFFICULTY_LEVEL = "Easy"
+INITIAL_TIME_LIMIT = 75
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
@@ -44,3 +54,102 @@ stream = ExtResource( 3 )
 
 [node name="LevelCompleteSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+
+[node name="InfoPanel" type="PanelContainer" parent="."]
+margin_right = 360.0
+margin_bottom = 2000.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="InfoPanel"]
+margin_right = 360.0
+margin_bottom = 2000.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 350.0
+margin_bottom = 1990.0
+
+[node name="Button" type="Button" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_right = 340.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 80 )
+text = "Pause"
+
+[node name="HealthTextureRect" type="TextureRect" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 84.0
+margin_right = 336.0
+margin_bottom = 196.0
+rect_min_size = Vector2( 336, 112 )
+size_flags_horizontal = 0
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 2
+script = ExtResource( 12 )
+
+[node name="HSeparator" type="HSeparator" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 200.0
+margin_right = 340.0
+margin_bottom = 350.0
+size_flags_vertical = 0
+custom_constants/separation = 150
+
+[node name="DangerLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 354.0
+margin_right = 340.0
+margin_bottom = 420.0
+custom_colors/font_color = Color( 0.839216, 0, 0, 1 )
+text = "DANGER"
+uppercase = true
+script = ExtResource( 13 )
+
+[node name="PromptLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 424.0
+margin_right = 340.0
+margin_bottom = 490.0
+size_flags_vertical = 1
+text = "Catch Flies!!"
+script = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 494.0
+margin_right = 340.0
+margin_bottom = 560.0
+size_flags_vertical = 1
+custom_styles/normal = ExtResource( 14 )
+text = "Time : 60"
+script = ExtResource( 9 )
+
+[node name="LevelLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 564.0
+margin_right = 340.0
+margin_bottom = 630.0
+text = "Level : 1"
+
+[node name="ScoreLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+margin_top = 634.0
+margin_right = 340.0
+margin_bottom = 700.0
+size_flags_vertical = 1
+text = "Score : 0"
+script = ExtResource( 7 )
+
+[connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
+[connection signal="PromptChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
+[connection signal="ScoreChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
+[connection signal="TimeLeftChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
+[connection signal="TimeLowChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLowChanged"]
+[connection signal="FrogHealthChanged" from="Frog" to="." method="OnFrogHealthChanged"]
+[connection signal="FrogHealthChanged" from="Frog" to="InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]

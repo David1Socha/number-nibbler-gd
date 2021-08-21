@@ -1,0 +1,13 @@
+[gd_resource type="StyleBoxFlat" format=2]
+
+[resource]
+resource_name = "TimeLabelStyleBox"
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color( 0.839216, 0, 0, 1 )
+expand_margin_left = 5.0

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/gator_4.svg-9659713c0d264c742c67f65d91eef6e9.stex"
+path="res://.import/heart.svg-03b210dad797a86517a7a4c77ac0fb1a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/gator_4.svg"
-dest_files=[ "res://.import/gator_4.svg-9659713c0d264c742c67f65d91eef6e9.stex" ]
+source_file="res://images/heart.svg"
+dest_files=[ "res://.import/heart.svg-03b210dad797a86517a7a4c77ac0fb1a.stex" ]
 
 [params]
 
@@ -31,4 +31,4 @@ process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true
-svg/scale=0.6
+svg/scale=0.9

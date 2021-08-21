@@ -12,11 +12,17 @@ namespace NumberNibbler.Scripts.FlyGeneration
         {
             switch (strategyName)
             {
-                case "Addition":
+                case Global.Categories.Addition:
                     return new AdditionFlyGenerationStrategy(difficultyName);
-                case "Subtraction":
+                case Global.Categories.Subtraction:
                     return new SubtractionFlyGenerationStrategy(difficultyName);
-                case "Basic":
+                case Global.Categories.Multiplication:
+                    return new MultiplicationFlyGenerationStrategy(difficultyName);
+                case Global.Categories.Division:
+                    return new DivisionFlyGenerationStrategy(difficultyName);
+                case Global.Categories.Multiples:
+                    return new MultiplesFlyGenerationStrategy(difficultyName);
+                case Global.Categories.Basic:
                 default:
                     return new BasicFlyGenerationStrategy();
             }
