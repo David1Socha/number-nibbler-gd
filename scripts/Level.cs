@@ -37,7 +37,17 @@ namespace NumberNibbler.Scripts
         [Export(PropertyHint.Enum, "Easy,Hard")]
         private readonly string DIFFICULTY_LEVEL;
 
-        private int _score; // TODO add score label
+        [Export]
+        private readonly int INITIAL_TIME_LIMIT;
+
+        [Signal]
+        public delegate void ScoreChanged(int score);
+
+        [Signal]
+        public delegate void TimeLeftChanged(int time);
+
+        private int _score;
+        private float _currentTimeLimit, _currentTimeRemaining;
         private float _enemySpawnTimeDelay;
         private AudioStreamPlayer _spawnWarningSound, _levelCompleteSound;
         private Line2D _warningBox;
@@ -66,9 +76,21 @@ namespace NumberNibbler.Scripts
 
             _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
             _score = 0;
+            _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
+            _currentTimeRemaining = _currentTimeLimit;
             SpawnAllFlies();
             //TODO start fly buzz timer/logic
             SpawnEnemyAfterDelay();
+        }
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+
+            _currentTimeRemaining -= delta;
+            EmitSignal("TimeLeftChanged", _currentTimeRemaining);
+
+            // TODO trigger game over when time less than or equal to 0
         }
 
         private void SpawnAllFlies()
@@ -159,7 +181,7 @@ namespace NumberNibbler.Scripts
             {
                 var pointsGained = POINTS_FOR_CORRECT_ANSWER * (DIFFICULTY_LEVEL == Global.Difficulties.Hard ? HARD_DIFFICULTY_POINTS_MULTIPLIER : 1);
                 _score += pointsGained;
-                GD.Print($"gained {POINTS_FOR_CORRECT_ANSWER} score!! new score is {_score}");
+                EmitSignal("ScoreChanged", _score);
 
                 flyAtLocation.QueueFree();
                 return true;
@@ -171,6 +193,7 @@ namespace NumberNibbler.Scripts
             if (AreAllCorrectFliesEaten())
             {
                 _levelCompleteSound.Play();
+                // TODO add remaining time to score ??
             }
         }
 
