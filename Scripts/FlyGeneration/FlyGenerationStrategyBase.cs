@@ -20,7 +20,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
             var answerRangeForSelectedDifficulty = AnswerRanges[difficulty];
             _difficulty = difficulty;
 
-            _answer = GetRandomAnswer(answerRangeForSelectedDifficulty.minAnswer, answerRangeForSelectedDifficulty.maxAnswer);
+            _answer = 13;
             _correctAnswers = GenerateCorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
             _incorrectAnswers = GenerateIncorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
         }
@@ -31,7 +31,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
         }
 
         protected abstract Dictionary<string, (int minAnswer, int maxAnswer)> AnswerRanges { get; }
-        public string GetPrompt()
+        public virtual string GetPrompt()
         {
             return $"Make {_answer}";
         }

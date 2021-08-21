@@ -20,6 +20,8 @@ namespace NumberNibbler.Scripts.FlyGeneration
                     return new MultiplicationFlyGenerationStrategy(difficultyName);
                 case Global.Categories.Division:
                     return new DivisionFlyGenerationStrategy(difficultyName);
+                case Global.Categories.Multiples:
+                    return new MultiplesFlyGenerationStrategy(difficultyName);
                 case Global.Categories.Basic:
                 default:
                     return new BasicFlyGenerationStrategy();
