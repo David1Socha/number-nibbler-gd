@@ -22,7 +22,7 @@ POINTS_FOR_CORRECT_ANSWER = 5
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
 CATEGORY = "Basic"
 DIFFICULTY_LEVEL = "Easy"
-INITIAL_TIME_LIMIT = 60
+INITIAL_TIME_LIMIT = 75
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
