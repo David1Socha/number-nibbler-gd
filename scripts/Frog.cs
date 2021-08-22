@@ -77,8 +77,8 @@ namespace NumberNibbler.Scripts
                     }
                     else
                     {
-                        // TODO need button to exclusively grab input
-                        _targetDestination = _level.CanMove(targetGridCoords);
+                        // TODO button would ideally stop input event propogation -- not causing bugs right now, but isn't the cleanest..
+                        _targetDestination = (_level.CanMove(targetGridCoords) ?? _targetDestination);
                     }
                 }
             }
