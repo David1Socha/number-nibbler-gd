@@ -77,6 +77,7 @@ namespace NumberNibbler.Scripts
                     }
                     else
                     {
+                        // TODO need button to exclusively grab input
                         _targetDestination = _level.CanMove(targetGridCoords);
                     }
                 }

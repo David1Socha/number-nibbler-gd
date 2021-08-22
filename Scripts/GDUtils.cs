@@ -23,5 +23,10 @@ namespace NumberNibbler.Scripts
         {
             return list[random.RandiRange(0, list.Length - 1)];
         }
+
+        public static void Quit(this Node self)
+        {
+            self.GetTree().Quit();
+        }
     }
 }
