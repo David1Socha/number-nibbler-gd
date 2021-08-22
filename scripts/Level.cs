@@ -95,7 +95,7 @@ namespace NumberNibbler.Scripts
             _score = 0;
             UpdateScore(0);
 
-            InitializeLevel(level: 0);
+            InitializeLevel(level: 1);
         }
 
         public void InitializeLevel(int level)
