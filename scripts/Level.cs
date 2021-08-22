@@ -48,6 +48,9 @@ namespace NumberNibbler.Scripts
         public delegate void ScoreChanged(int score);
 
         [Signal]
+        public delegate void LevelChanged(int level);
+
+        [Signal]
         public delegate void TimeLeftChanged(int time);
 
         [Signal]
@@ -60,9 +63,10 @@ namespace NumberNibbler.Scripts
         public delegate void TimeLowChanged(bool isTimeLow);
 
         private int _score;
+        private int _level;
         private float _currentTimeLimit, _timeRemaining;
         private float _enemySpawnTimeDelay;
-        private AudioStreamPlayer _spawnWarningSound, _levelCompleteSound;
+        private AudioStreamPlayer _warningSound, _levelCompleteSound;
         private Line2D _spawnWarningBox;
         private Rect2 _gridRect;
         private TileMap _lilyGrid;
@@ -77,28 +81,35 @@ namespace NumberNibbler.Scripts
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            //TODO move to global startup script??
-            OS.MinWindowSize = new Vector2(600, 400);
-
             _random = new RandomNumberGenerator();
             _random.Randomize();
 
             _lilyGrid = GetNode<TileMap>("LilyGrid");
             _gridRect = _lilyGrid.GetUsedRect();
-            _spawnWarningSound = GetNode<AudioStreamPlayer>("SpawnWarningSound");
+            _warningSound = GetNode<AudioStreamPlayer>("WarningSound");
             _levelCompleteSound = GetNode<AudioStreamPlayer>("LevelCompleteSound");
             _spawnWarningBox = GetNode<Line2D>("SpawnWarningBox");
             _gatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
             _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
 
-            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
-            EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
-
             _score = 0;
             UpdateScore(0);
 
+            InitializeLevel(level: 0);
+        }
+
+        public void InitializeLevel(int level)
+        {
+            _level = level;
+            UpdateLevel(level);
+
             UpdateDanger(danger: false);
             EmitSignal("TimeLowChanged", false);
+
+            // TODO set frog position??
+
+            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
+            EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
 
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
             _timeRemaining = _currentTimeLimit;
@@ -119,6 +130,7 @@ namespace NumberNibbler.Scripts
 
             if (_timeRemaining < TimeLeftBeforeWarningShown && _isDanger == false)
             {
+                _warningSound.Play();
                 UpdateDanger(danger: true);
                 EmitSignal("TimeLowChanged", true);
             }
@@ -191,7 +203,7 @@ namespace NumberNibbler.Scripts
             await GDUtils.Wait(this, ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING);
 
             UpdateDanger(danger: false);
-            _spawnWarningBox.QueueFree();
+            _spawnWarningBox.Visible = false;
 
             _gator = _gatorPackedScene.Instance<Area2D>();
             _gator.Position = _spawnWorldLocation;
@@ -239,6 +251,12 @@ namespace NumberNibbler.Scripts
             EmitSignal("ScoreChanged", _score);
         }
 
+        private void UpdateLevel(int level)
+        {
+            _level = level;
+            EmitSignal("LevelChanged", _level);
+        }
+
         private void UpdateDanger(bool danger)
         {
             _isDanger = danger;
@@ -252,13 +270,33 @@ namespace NumberNibbler.Scripts
                 _levelCompleteSound.Play();
                 int pointsGainedFromExtraTime = (int)_timeRemaining;
                 UpdateScore(pointsGainedFromExtraTime);
-                // TODO transition to next level...
+
+                CleanupCurrentLevel();
             }
+        }
+
+        private void CleanupCurrentLevel()
+        {
+            GDUtils.CancelAllActiveTimers();
+            _gator?.QueueFree();
+            _gator = null;
+            _spawnWarningBox.Visible = false;
+            foreach (var flyRow in _flyGrid)
+            {
+                if (flyRow != null)
+                {
+                    foreach (var fly in flyRow)
+                    {
+                        fly?.QueueFree();
+                    }
+                }
+            }
+            InitializeLevel(_level + 1);
         }
 
         private void WarnEnemySpawn()
         {
-            _spawnWarningSound.Play();
+            _warningSound.Play();
 
             var spawnGridLocationX = _random.RandiRange((int)_gridRect.Position.x, (int)_gridRect.End.x - 1);
             var spawnGridLocationY = _random.RandiRange((int)_gridRect.Position.y, (int)_gridRect.End.y - 1);

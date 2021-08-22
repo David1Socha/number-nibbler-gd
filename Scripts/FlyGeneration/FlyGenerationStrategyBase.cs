@@ -11,16 +11,24 @@ namespace NumberNibbler.Scripts.FlyGeneration
         protected List<string> _incorrectAnswers, _correctAnswers;
         protected const int INCORRECT_ANSWER_NEGATIVE_DELTA = 1, INCORRECT_ANSWER_POSITIVE_DELTA = 1;
         protected string _difficulty;
+        protected int _minAnswer, _maxAnswer;
 
         public FlyGenerationStrategyBase(string difficulty)
         {
             _random = new RandomNumberGenerator();
             _random.Randomize();
 
-            var answerRangeForSelectedDifficulty = AnswerRanges[difficulty];
+            (int minAnswer, int maxAnswer) answerRangeForSelectedDifficulty = AnswerRanges[difficulty];
+            _minAnswer = answerRangeForSelectedDifficulty.minAnswer;
+            _maxAnswer = answerRangeForSelectedDifficulty.maxAnswer;
             _difficulty = difficulty;
 
-            _answer = 13;
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            _answer = GetRandomAnswer(_minAnswer, _maxAnswer);
             _correctAnswers = GenerateCorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
             _incorrectAnswers = GenerateIncorrectAnswerPool(_answer).Select(a => ConvertAnswerPoolValueToAnswer(a)).ToList();
         }

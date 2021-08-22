@@ -15,6 +15,10 @@ run/main_scene="res://Level.tscn"
 config/icon="res://number_nibbler_icon.png"
 config/windows_native_icon="res://number_nibbler_icon.ico"
 
+[autoload]
+
+Startup="*res://Scripts/Startup.cs"
+
 [display]
 
 window/size/width=1280

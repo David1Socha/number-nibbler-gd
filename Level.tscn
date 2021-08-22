@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://themes/TimeLabelStyleBox.tres" type="StyleBox" id=14]
 [ext_resource path="res://Scripts/Pause.cs" type="Script" id=15]
 [ext_resource path="res://Scripts/QuitGameButton.cs" type="Script" id=16]
+[ext_resource path="res://Scripts/LevelLabel.cs" type="Script" id=17]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -27,9 +28,9 @@ MAXIMUM_CORRECT_ANSWER_COUNT = 11
 POINTS_FOR_CORRECT_ANSWER = 5
 POINTS_LOST_FOR_WRONG_ANSWER = 10
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
-CATEGORY = "Basic"
+CATEGORY = "Addition"
 DIFFICULTY_LEVEL = "Easy"
-INITIAL_TIME_LIMIT = 75
+INITIAL_TIME_LIMIT = 70
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
@@ -51,7 +52,7 @@ z_index = 1
 points = PoolVector2Array( 5, 5, 5, 175, 175, 175, 175, 5, 0, 5 )
 default_color = Color( 0.839216, 0, 0, 1 )
 
-[node name="SpawnWarningSound" type="AudioStreamPlayer" parent="."]
+[node name="WarningSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 
 [node name="LevelCompleteSound" type="AudioStreamPlayer" parent="."]
@@ -141,6 +142,7 @@ margin_top = 564.0
 margin_right = 336.0
 margin_bottom = 630.0
 text = "Level : 1"
+script = ExtResource( 17 )
 
 [node name="ScoreLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 634.0
@@ -215,6 +217,7 @@ text = "Quit Game"
 script = ExtResource( 16 )
 
 [connection signal="DangerChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
+[connection signal="LevelChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/LevelLabel" method="OnLevelChanged"]
 [connection signal="PromptChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
 [connection signal="ScoreChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
 [connection signal="TimeLeftChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]

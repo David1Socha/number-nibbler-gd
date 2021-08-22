@@ -9,9 +9,26 @@ namespace NumberNibbler.Scripts
 {
     public static class GDUtils
     {
+        public static List<Timer> ActiveTimers { get; set; } = new List<Timer>();
+
         public static SignalAwaiter Wait(Node self, float seconds)
         {
-            return self.ToSignal(self.GetTree().CreateTimer(seconds, pauseModeProcess: false), "timeout");
+            var timer = new Timer();
+            self.AddChild(timer);
+            timer.Start(seconds);
+            ActiveTimers.Add(timer);
+            return self.ToSignal(timer, "timeout");
+        }
+
+        public static void CancelAllActiveTimers()
+        {
+            foreach (var timer in ActiveTimers)
+            {
+                timer?.Stop();
+                timer?.QueueFree();
+            }
+
+            ActiveTimers = new List<Timer>();
         }
 
         public static T PickRandomElement<T>(List<T> list, RandomNumberGenerator random)
