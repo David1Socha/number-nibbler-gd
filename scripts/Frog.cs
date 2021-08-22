@@ -39,9 +39,9 @@ namespace NumberNibbler.Scripts
             _frogEatSound = GetNode<AudioStreamPlayer>("FrogEatSound");
         }
 
-        public override void _Input(InputEvent @event)
+        public override void _UnhandledInput(InputEvent @event)
         {
-            base._Input(@event);
+            base._UnhandledInput(@event);
 
             Vector2 currentDestinationOrPosition = _targetDestination != null ? _level.MapToWorld(_targetDestination.Value) : Position;
 
@@ -77,7 +77,6 @@ namespace NumberNibbler.Scripts
                     }
                     else
                     {
-                        // TODO button would ideally stop input event propogation -- not causing bugs right now, but isn't the cleanest..
                         _targetDestination = (_level.CanMove(targetGridCoords) ?? _targetDestination);
                     }
                 }
