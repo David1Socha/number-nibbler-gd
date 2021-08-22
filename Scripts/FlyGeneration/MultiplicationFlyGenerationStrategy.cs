@@ -24,12 +24,12 @@ namespace NumberNibbler.Scripts.FlyGeneration
             if (_difficulty == Global.Difficulties.Easy)
             {
                 int[] easyAnswerOptions = new int[] { 8, 12, 16, 18, 20 };
-                return easyAnswerOptions[_random.RandiRange(0, easyAnswerOptions.Length - 1)];
+                return GDUtils.PickRandomElement(easyAnswerOptions, _random);
             }
             else
             {
                 int[] hardAnswerOptions = new int[] { 12, 18, 20, 24, 30 };
-                return hardAnswerOptions[_random.RandiRange(0, hardAnswerOptions.Length - 1)];
+                return GDUtils.PickRandomElement(hardAnswerOptions, _random);
             }
         }
 

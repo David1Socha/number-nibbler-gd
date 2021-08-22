@@ -181,11 +181,11 @@ namespace NumberNibbler.Scripts
         private async void SpawnEnemyAfterDelay()
         {
             _enemySpawnTimeDelay = _random.RandfRange(ENEMY_SPAWN_TIME_DELAY_BASE - ENEMY_SPAWN_TIME_DELAY_NOISE, ENEMY_SPAWN_TIME_DELAY_BASE + ENEMY_SPAWN_TIME_DELAY_NOISE);
-            await ToSignal(GetTree().CreateTimer(_enemySpawnTimeDelay), "timeout");
+            await GDUtils.Wait(this, _enemySpawnTimeDelay);
 
             WarnEnemySpawn();
 
-            await ToSignal(GetTree().CreateTimer(ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING), "timeout");
+            await GDUtils.Wait(this, ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING);
 
             UpdateDanger(danger: false);
             _spawnWarningBox.QueueFree();

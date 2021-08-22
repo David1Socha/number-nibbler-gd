@@ -39,13 +39,13 @@ namespace NumberNibbler.Scripts.FlyGeneration
         public string GenerateCorrectAnswer()
         {
             // TODO could ensure we draw more uniformly from this pool?
-            return _correctAnswers[_random.RandiRange(0, _correctAnswers.Count - 1)];
+            return GDUtils.PickRandomElement(_correctAnswers, _random);
         }
 
         public string GenerateIncorrectAnswer()
         {
             // TODO could ensure we draw more uniformly from this pool?
-            return _incorrectAnswers[_random.RandiRange(0, _incorrectAnswers.Count - 1)];
+            return GDUtils.PickRandomElement(_incorrectAnswers, _random);
         }
 
         protected abstract List<(int term1, int? term2)> GenerateCorrectAnswerPool(int answer);

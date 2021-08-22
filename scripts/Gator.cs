@@ -38,7 +38,7 @@ namespace NumberNibbler.Scripts
 
         public async void QueueRandomMoveAfterDelay()
         {
-            await ToSignal(GetTree().CreateTimer(POST_MOVE_DELAY_TIME), "timeout");
+            await GDUtils.Wait(this, POST_MOVE_DELAY_TIME);
 
             MoveGatorRandomly();
         }

@@ -4,9 +4,9 @@
 [ext_resource path="res://themes/ButtonColor.tres" type="StyleBox" id=2]
 [ext_resource path="res://themes/ScorePanelTheme_LabelStyleBox.tres" type="StyleBox" id=3]
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 0.6, 1 )
 
 [resource]
@@ -23,7 +23,7 @@ Button/styles/hover = ExtResource( 2 )
 Button/styles/normal = ExtResource( 2 )
 Button/styles/pressed = ExtResource( 2 )
 HSeparator/constants/separation = 4
-HSeparator/styles/separator = SubResource( 2 )
+HSeparator/styles/separator = SubResource( 1 )
 Label/colors/font_color = Color( 0, 0, 0, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -33,4 +33,4 @@ Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
 Label/fonts/font = null
 Label/styles/normal = ExtResource( 3 )
-PanelContainer/styles/panel = SubResource( 1 )
+PanelContainer/styles/panel = SubResource( 2 )
