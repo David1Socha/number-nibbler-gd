@@ -1220,6 +1220,19 @@
        y1="190.66158"
        x2="90.519753"
        y2="188.04688" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter6421-4-7-1-5"
+       x="-0.15709943"
+       width="1.3141989"
+       y="-0.089049158"
+       height="1.1780983">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.17232388"
+         id="feGaussianBlur6423-1-5-3-2" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1228,9 +1241,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2577968"
-     inkscape:cx="2123.157"
-     inkscape:cy="843.5385"
+     inkscape:zoom="0.35476609"
+     inkscape:cx="2163.3973"
+     inkscape:cy="625.76442"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2323,12 +2336,6 @@
        inkscape:export-xdpi="8.7113571"
        inkscape:export-ydpi="8.7113571" />
     <path
-       id="ellipse6482-2-0"
-       style="display:inline;opacity:0.437909;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;filter:url(#filter6421-4-7-1);stop-color:#000000"
-       transform="matrix(-12.635891,0.99738153,-0.99819156,6.9096689,7285.9453,-242.19496)"
-       d="m 429.19209,112.70691 c -0.1402,0.8483 -0.2862,3.80977 -0.49303,3.1032 -0.47245,-1.61402 -0.38626,-2.3228 -0.14488,-2.93739 0.59912,-1.52546 1.25781,-1.58117 2.20444,-1.58117 0.94663,0 -1.28563,-0.28433 -1.56653,1.41536 z"
-       sodipodi:nodetypes="sssss" />
-    <path
        id="ellipse6482-2"
        style="display:inline;opacity:0.437909;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;filter:url(#filter6421-4-7);stop-color:#000000"
        transform="matrix(-12.635891,0.99738153,-0.99819156,6.9096689,7253.2282,-268.77247)"
@@ -2354,7 +2361,7 @@
        transform="matrix(0,-5.5928753,-5.9164809,0,2652.4616,1991.3025)" />
     <path
        id="path6188-1-7"
-       style="display:inline;mix-blend-mode:screen;fill:url(#linearGradient6190-8-7);fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-miterlimit:2;paint-order:stroke markers fill;filter:url(#filter3417-0-3-7-6);stop-color:#000000;opacity:0.4437299"
+       style="display:inline;mix-blend-mode:screen;fill:url(#linearGradient6190-8-7);fill-opacity:1;stroke-width:0.264583;stroke-linecap:round;stroke-miterlimit:2;paint-order:stroke markers fill;filter:url(#filter3417-0-3-7-6);stop-color:#000000;opacity:0.31832797"
        transform="matrix(1.6882121,8.2959657,3.7203149,0.2782565,1096.5361,-190.31775)"
        d="m 91.044596,187.2694 c -6e-6,0.88346 -10.689716,-3.68665 -16.063264,-1.04374 -9.109696,1.05128 1.060709,-5.64195 3.480023,-5.77132 5.203831,0 12.583249,5.60382 12.583241,6.81506 z"
        sodipodi:nodetypes="sccs"
@@ -2440,5 +2447,17 @@
          inkscape:export-xdpi="116.31"
          inkscape:export-ydpi="116.31" />
     </g>
+    <path
+       id="ellipse6482-2-0-0"
+       style="display:inline;opacity:0.437909;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;filter:url(#filter6421-4-7-1-5);stop-color:#000000"
+       transform="matrix(-12.635891,0.99738153,-0.99819156,6.9096689,7259.0759,-272.91683)"
+       d="m 429.19209,112.70691 c -0.1402,0.8483 -0.2862,3.80977 -0.49303,3.1032 -0.47245,-1.61402 -0.38626,-2.3228 -0.14488,-2.93739 0.59912,-1.52546 1.25781,-1.58117 2.20444,-1.58117 0.94663,0 -1.28563,-0.28433 -1.56653,1.41536 z"
+       sodipodi:nodetypes="sssss" />
+    <path
+       id="ellipse6482-2-0"
+       style="display:inline;opacity:0.437909;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;filter:url(#filter6421-4-7-1);stop-color:#000000"
+       transform="matrix(-12.635891,0.99738153,-0.99819156,6.9096689,7300.5237,-245.83962)"
+       d="m 429.19209,112.70691 c -0.1402,0.8483 -0.2862,3.80977 -0.49303,3.1032 -0.47245,-1.61402 -0.38626,-2.3228 -0.14488,-2.93739 0.59912,-1.52546 1.25781,-1.58117 2.20444,-1.58117 0.94663,0 -1.28563,-0.28433 -1.56653,1.41536 z"
+       sodipodi:nodetypes="sssss" />
   </g>
 </svg>
