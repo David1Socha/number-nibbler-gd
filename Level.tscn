@@ -56,16 +56,19 @@ stream = ExtResource( 3 )
 [node name="LevelCompleteSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 
-[node name="InfoPanel" type="PanelContainer" parent="."]
+[node name="InfoPanelLayer" type="CanvasLayer" parent="."]
+
+[node name="InfoPanel" type="PanelContainer" parent="InfoPanelLayer"]
+anchor_bottom = 1.0
 margin_right = 356.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="InfoPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="InfoPanelLayer/InfoPanel"]
 margin_right = 356.0
 margin_bottom = 720.0
 custom_constants/margin_right = 10
@@ -73,19 +76,19 @@ custom_constants/margin_top = 10
 custom_constants/margin_left = 10
 custom_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanelLayer/InfoPanel/MarginContainer"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 346.0
 margin_bottom = 710.0
 
-[node name="PauseButton" type="Button" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="PauseButton" type="Button" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_right = 336.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 0, 80 )
 text = "Pause"
 
-[node name="HealthTextureRect" type="TextureRect" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="HealthTextureRect" type="TextureRect" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 84.0
 margin_right = 336.0
 margin_bottom = 196.0
@@ -96,14 +99,14 @@ expand = true
 stretch_mode = 2
 script = ExtResource( 12 )
 
-[node name="HSeparator" type="HSeparator" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 200.0
 margin_right = 336.0
 margin_bottom = 350.0
 size_flags_vertical = 0
 custom_constants/separation = 150
 
-[node name="DangerLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="DangerLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 354.0
 margin_right = 336.0
 margin_bottom = 420.0
@@ -112,7 +115,7 @@ text = "DANGER"
 uppercase = true
 script = ExtResource( 13 )
 
-[node name="PromptLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="PromptLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 424.0
 margin_right = 336.0
 margin_bottom = 490.0
@@ -123,7 +126,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TimeLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="TimeLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 494.0
 margin_right = 336.0
 margin_bottom = 560.0
@@ -132,13 +135,13 @@ custom_styles/normal = ExtResource( 14 )
 text = "Time : 60"
 script = ExtResource( 9 )
 
-[node name="LevelLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 564.0
 margin_right = 336.0
 margin_bottom = 630.0
 text = "Level : 1"
 
-[node name="ScoreLabel" type="Label" parent="InfoPanel/MarginContainer/VBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer"]
 margin_top = 634.0
 margin_right = 336.0
 margin_bottom = 700.0
@@ -164,11 +167,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 1, 1, 0.6, 1 )
 
-[connection signal="DangerChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
-[connection signal="PromptChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
-[connection signal="ScoreChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
-[connection signal="TimeLeftChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
-[connection signal="TimeLowChanged" from="." to="InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLowChanged"]
-[connection signal="FrogHealthChanged" from="Frog" to="InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]
+[connection signal="DangerChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
+[connection signal="PromptChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/PromptLabel" method="OnPromptChanged"]
+[connection signal="ScoreChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
+[connection signal="TimeLeftChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
+[connection signal="TimeLowChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLowChanged"]
+[connection signal="FrogHealthChanged" from="Frog" to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]
 [connection signal="FrogHealthChanged" from="Frog" to="." method="OnFrogHealthChanged"]
-[connection signal="pressed" from="InfoPanel/MarginContainer/VBoxContainer/PauseButton" to="PauseLayer/Pause" method="OnPauseTriggered"]
+[connection signal="pressed" from="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/PauseButton" to="PauseLayer/Pause" method="OnPauseTriggered"]
