@@ -72,7 +72,7 @@ namespace NumberNibbler.Scripts
         private TileMap _lilyGrid;
         private PackedScene _gatorPackedScene, _flyPackedScene;
         private Area2D _gator;
-        private Area2D _frog;
+        private Frog _frog;
         private Vector2 _spawnWorldLocation;
         private RandomNumberGenerator _random;
         private Fly[][] _flyGrid;
@@ -92,7 +92,7 @@ namespace NumberNibbler.Scripts
             _spawnWarningBox = GetNode<Line2D>("SpawnWarningBox");
             _gatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
             _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
-            _frog = GetNode<Area2D>("Frog");
+            _frog = GetNode<Frog>("Frog");
 
             _score = 0;
             UpdateScore(0);
@@ -109,6 +109,7 @@ namespace NumberNibbler.Scripts
             EmitSignal("TimeLowChanged", false);
 
             _frog.Position = _lilyGrid.MapToWorld(_gridRect.Position);
+            _frog.ReadyToProcessNewActions = true;
 
             _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
             EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
@@ -146,7 +147,8 @@ namespace NumberNibbler.Scripts
         private void TriggerGameOver()
         {
             GD.Print("Game Over");
-            // TODO transition to game over scene ??
+            // TODO make game over scene
+            // TODO transition to game over scene ?? passing the score we ended with, difficulty, category, and loading high score (TBD)...
         }
 
         private void SpawnAllFlies()
@@ -265,7 +267,7 @@ namespace NumberNibbler.Scripts
             EmitSignal("DangerChanged", _isDanger);
         }
 
-        public void CheckForLevelCompletion()
+        public bool CheckForLevelCompletion()
         {
             if (AreAllCorrectFliesEaten())
             {
@@ -274,6 +276,11 @@ namespace NumberNibbler.Scripts
                 UpdateScore(pointsGainedFromExtraTime);
 
                 CleanupCurrentLevel();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

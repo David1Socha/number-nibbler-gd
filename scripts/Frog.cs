@@ -6,7 +6,6 @@ namespace NumberNibbler.Scripts
     public class Frog : Area2D
     {
         private Level _level;
-        private bool _readyToProcessNewActions;
         private Tween _frogTween;
         private AudioStreamPlayer _frogMoveSound, _frogDamagedSound, _frogEatSound;
         private Vector2? _targetDestination;
@@ -14,6 +13,7 @@ namespace NumberNibbler.Scripts
         private int _health;
 
         private Vector2 GridPosition { get { return _level.WorldToMap(Position); } }
+        public bool ReadyToProcessNewActions { get; set; }
 
         [Export]
         private readonly float FROG_MOVE_DURATION;
@@ -26,7 +26,7 @@ namespace NumberNibbler.Scripts
 
         public override void _Ready()
         {
-            _readyToProcessNewActions = true;
+            ReadyToProcessNewActions = true;
             _health = FROG_STARTING_HEALTH;
             EmitSignal("FrogHealthChanged", _health);
 
@@ -82,7 +82,7 @@ namespace NumberNibbler.Scripts
                 }
             }
 
-            if (_readyToProcessNewActions)
+            if (ReadyToProcessNewActions)
             {
                 if (_targetDestination.HasValue)
                 {
@@ -93,7 +93,7 @@ namespace NumberNibbler.Scripts
 
         private void EatIfAble()
         {
-            if (_readyToProcessNewActions)
+            if (ReadyToProcessNewActions)
             {
                 var eatResult = _level.AttemptToEatAtLocation((int)GridPosition.x, (int)GridPosition.y);
                 if (eatResult != null)
@@ -108,7 +108,7 @@ namespace NumberNibbler.Scripts
                         _frogEatSound.Play();
                     }
 
-                    _readyToProcessNewActions = false;
+                    ReadyToProcessNewActions = false;
                     _animSprite.Frame = 0;
                     _animSprite.Play();
                 }
@@ -117,9 +117,16 @@ namespace NumberNibbler.Scripts
 
         private void OnEatAnimationFinished()
         {
-            _readyToProcessNewActions = true;
-            _level.CheckForLevelCompletion();
-            MoveFrogTowardsTargetDestination();
+            var isLevelComplete = _level.CheckForLevelCompletion();
+            if (isLevelComplete)
+            {
+                ReadyToProcessNewActions = false;
+            }
+            else
+            {
+                ReadyToProcessNewActions = true;
+                MoveFrogTowardsTargetDestination();
+            }
         }
 
         private void MoveFrogTowardsTargetDestination()
@@ -130,7 +137,7 @@ namespace NumberNibbler.Scripts
             {
                 _frogMoveSound.Play();
 
-                _readyToProcessNewActions = false;
+                ReadyToProcessNewActions = false;
 
                 int xDelta = getDeltaTowardsDestination(_targetDestination.Value.x, GridPosition.x, step);
                 int yDelta = getDeltaTowardsDestination(_targetDestination.Value.y, GridPosition.y, step);
@@ -168,7 +175,7 @@ namespace NumberNibbler.Scripts
         {
             if (_targetDestination == GridPosition || _targetDestination == null)
             {
-                _readyToProcessNewActions = true;
+                ReadyToProcessNewActions = true;
                 _targetDestination = null;
             }
             else
