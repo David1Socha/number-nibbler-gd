@@ -8,6 +8,7 @@ namespace NumberNibbler.Scripts
         private bool _initialized = false;
         private string _category, _difficulty;
         private int _score;
+        private PackedScene _menuScene, _levelScene;
 
         public void Initialize(string category, string difficulty, int score)
         {
@@ -26,6 +27,9 @@ namespace NumberNibbler.Scripts
 
             base._Ready();
 
+            _levelScene = GD.Load<PackedScene>("res://Level.tscn");
+            //_levelScene = GD.Load<PackedScene>("res://MainMenu.tscn");
+
             var gameModeLabel = GetNode<Label>("GameOverControl/GameOverBackground/VBoxContainer/GameModeLabel");
             gameModeLabel.Text = $"{_category} - {_difficulty}";
 
@@ -33,6 +37,14 @@ namespace NumberNibbler.Scripts
             scoreLabel.Text = $"Score : {_score}";
 
             // TODO fetch high score and display that here as well. will need a new Hboxcontainer and highscore label
+        }
+
+        public void OnPlayAgain()
+        {
+            var levelScene = _levelScene.Instance<Level>();
+            levelScene.Category = _category;
+            levelScene.Difficulty = _difficulty;
+            this.TransitionToScene(levelScene);
         }
     }
 }

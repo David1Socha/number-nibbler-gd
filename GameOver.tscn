@@ -91,3 +91,5 @@ size_flags_horizontal = 3
 text = "Return to Menu"
 
 [node name="QuitGameButton" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 2 )]
+
+[connection signal="pressed" from="GameOverControl/GameOverBackground/VBoxContainer/PlayAgainButton" to="." method="OnPlayAgain"]

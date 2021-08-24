@@ -62,7 +62,6 @@ namespace NumberNibbler.Scripts
         [Signal]
         public delegate void TimeLowChanged(bool isTimeLow);
 
-        private int _score;
         private int _level;
         private float _currentTimeLimit, _timeRemaining;
         private float _enemySpawnTimeDelay;
@@ -78,6 +77,10 @@ namespace NumberNibbler.Scripts
         private Fly[][] _flyGrid;
         private IFlyGenerationStrategy _flyGenerationStrategy;
         private bool _isDanger;
+
+        public int Score { get; set; }
+        public string Category { get; set; }
+        public string Difficulty { get; set; }
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
@@ -95,8 +98,12 @@ namespace NumberNibbler.Scripts
             _gameOverScene = GD.Load<PackedScene>("res://GameOver.tscn");
             _frog = GetNode<Frog>("Frog");
 
-            _score = 0;
+            Score = 0;
             UpdateScore(0);
+
+            // TODO may be able to remove these 2 lines once main menu is finished
+            Difficulty = Difficulty ?? DIFFICULTY_LEVEL;
+            Category = Category ?? CATEGORY;
 
             InitializeLevel(level: 1);
         }
@@ -109,10 +116,7 @@ namespace NumberNibbler.Scripts
             UpdateDanger(danger: false);
             EmitSignal("TimeLowChanged", false);
 
-            _frog.Position = _lilyGrid.MapToWorld(_gridRect.Position);
-            _frog.ReadyToProcessNewActions = true;
-
-            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, DIFFICULTY_LEVEL);
+            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, Difficulty);
             EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
 
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
@@ -121,6 +125,9 @@ namespace NumberNibbler.Scripts
             SpawnAllFlies();
             //TODO start fly buzz timer/logic here ??
             SpawnEnemyAfterDelay();
+
+            _frog.Position = _lilyGrid.MapToWorld(_gridRect.Position);
+            _frog.ReadyToProcessNewActions = true;
         }
 
         public override void _Process(float delta)
@@ -147,8 +154,8 @@ namespace NumberNibbler.Scripts
 
         private void TriggerGameOver()
         {
-            var gameOverScene = _gameOverScene.Instance() as GameOver;
-            gameOverScene.Initialize(CATEGORY, DIFFICULTY_LEVEL, _score);
+            var gameOverScene = _gameOverScene.Instance<GameOver>();
+            gameOverScene.Initialize(CATEGORY, Difficulty, Score);
             this.TransitionToScene(gameOverScene);
         }
 
@@ -239,7 +246,7 @@ namespace NumberNibbler.Scripts
             }
             else
             {
-                var pointsGained = POINTS_FOR_CORRECT_ANSWER * (DIFFICULTY_LEVEL == Global.Difficulties.Hard ? HARD_DIFFICULTY_POINTS_MULTIPLIER : 1);
+                var pointsGained = POINTS_FOR_CORRECT_ANSWER * (Difficulty == Global.Difficulties.Hard ? HARD_DIFFICULTY_POINTS_MULTIPLIER : 1);
                 UpdateScore(pointsGained);
 
                 flyAtLocation.QueueFree();
@@ -249,11 +256,11 @@ namespace NumberNibbler.Scripts
 
         private void UpdateScore(int delta)
         {
-            _score += delta;
+            Score += delta;
             // don't let scores go negative (that would be mean...)
-            _score = Math.Max(0, _score);
+            Score = Math.Max(0, Score);
 
-            EmitSignal("ScoreChanged", _score);
+            EmitSignal("ScoreChanged", Score);
         }
 
         private void UpdateLevel(int level)

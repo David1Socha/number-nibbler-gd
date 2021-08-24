@@ -117,14 +117,14 @@ namespace NumberNibbler.Scripts
 
         private void OnEatAnimationFinished()
         {
+            ReadyToProcessNewActions = true;
             var isLevelComplete = _level.CheckForLevelCompletion();
             if (isLevelComplete)
             {
-                ReadyToProcessNewActions = false;
+                _targetDestination = null;
             }
             else
             {
-                ReadyToProcessNewActions = true;
                 MoveFrogTowardsTargetDestination();
             }
         }

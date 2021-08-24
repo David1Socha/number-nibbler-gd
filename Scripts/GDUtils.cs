@@ -55,6 +55,7 @@ namespace NumberNibbler.Scripts
         {
             self.GetTree().Root.AddChild(newRootScene);
             self.GetTree().CurrentScene.QueueFree();
+            self.GetTree().CurrentScene = newRootScene;
         }
     }
 }

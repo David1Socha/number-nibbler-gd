@@ -31,7 +31,7 @@ POINTS_LOST_FOR_WRONG_ANSWER = 10
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
 CATEGORY = "Addition"
 DIFFICULTY_LEVEL = "Easy"
-INITIAL_TIME_LIMIT = 70
+INITIAL_TIME_LIMIT = 80
 
 [node name="Background" type="Sprite" parent="."]
 position = Vector2( -164, -98.6667 )
