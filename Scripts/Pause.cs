@@ -9,6 +9,7 @@ namespace NumberNibbler.Scripts
         public override void _Ready()
         {
             _paused = false;
+            Visible = false;
 
             base._Ready();
         }

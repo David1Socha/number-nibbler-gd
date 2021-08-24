@@ -192,10 +192,11 @@ namespace NumberNibbler.Scripts
 
         private void OnFrogDamaged()
         {
-            _frogDamagedSound.Play();
-
             _health -= 1;
+            var sigs = GetSignalConnectionList("FrogHealthChanged");
             EmitSignal("FrogHealthChanged", _health);
+
+            _frogDamagedSound.Play();
         }
     }
 }

@@ -1,0 +1,93 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://themes/UITheme.tres" type="Theme" id=1]
+[ext_resource path="res://QuitGameButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/TitleFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Scripts/GameOver.cs" type="Script" id=4]
+[ext_resource path="res://fonts/MenuTextFont.tres" type="DynamicFont" id=5]
+
+[node name="GameOver" type="Node"]
+script = ExtResource( 4 )
+
+[node name="GameOverControl" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverBackground" type="ColorRect" parent="GameOverControl"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 0.6, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverControl/GameOverBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 196.0
+margin_top = -18.0
+margin_right = -179.0
+margin_bottom = -18.0
+custom_constants/separation = 30
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer"]
+margin_left = 67.0
+margin_right = 837.0
+margin_bottom = 187.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 1, 0.65098, 1 )
+text = "Game Over"
+
+[node name="GameModeLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer"]
+margin_left = 203.0
+margin_top = 217.0
+margin_right = 702.0
+margin_bottom = 290.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 5 )
+text = "Addition - Easy"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer"]
+margin_left = 261.0
+margin_top = 320.0
+margin_right = 643.0
+margin_bottom = 393.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 5 )
+text = "Score : 100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayAgainButton" type="Button" parent="GameOverControl/GameOverBackground/VBoxContainer"]
+margin_top = 423.0
+margin_right = 905.0
+margin_bottom = 543.0
+rect_min_size = Vector2( 0, 120 )
+text = "Play Again"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameOverControl/GameOverBackground/VBoxContainer"]
+margin_top = 573.0
+margin_right = 905.0
+margin_bottom = 693.0
+rect_min_size = Vector2( 0, 120 )
+custom_constants/separation = 30
+
+[node name="ReturnMenuButton" type="Button" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer"]
+margin_right = 437.0
+margin_bottom = 120.0
+size_flags_horizontal = 3
+text = "Return to Menu"
+
+[node name="QuitGameButton" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 2 )]

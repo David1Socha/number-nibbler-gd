@@ -70,7 +70,7 @@ namespace NumberNibbler.Scripts
         private Line2D _spawnWarningBox;
         private Rect2 _gridRect;
         private TileMap _lilyGrid;
-        private PackedScene _gatorPackedScene, _flyPackedScene;
+        private PackedScene _gatorPackedScene, _flyPackedScene, _gameOverScene;
         private Area2D _gator;
         private Frog _frog;
         private Vector2 _spawnWorldLocation;
@@ -92,6 +92,7 @@ namespace NumberNibbler.Scripts
             _spawnWarningBox = GetNode<Line2D>("SpawnWarningBox");
             _gatorPackedScene = GD.Load<PackedScene>("res://Gator.tscn");
             _flyPackedScene = GD.Load<PackedScene>("res://Fly.tscn");
+            _gameOverScene = GD.Load<PackedScene>("res://GameOver.tscn");
             _frog = GetNode<Frog>("Frog");
 
             _score = 0;
@@ -146,9 +147,9 @@ namespace NumberNibbler.Scripts
 
         private void TriggerGameOver()
         {
-            GD.Print("Game Over");
-            // TODO make game over scene
-            // TODO transition to game over scene ?? passing the score we ended with, difficulty, category, and loading high score (TBD)...
+            var gameOverScene = _gameOverScene.Instance() as GameOver;
+            gameOverScene.Initialize(CATEGORY, DIFFICULTY_LEVEL, _score);
+            this.TransitionToScene(gameOverScene);
         }
 
         private void SpawnAllFlies()

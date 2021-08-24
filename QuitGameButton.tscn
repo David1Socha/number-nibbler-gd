@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/QuitGameButton.cs" type="Script" id=1]
+
+[node name="QuitGameButton" type="Button"]
+margin_left = 467.0
+margin_right = 905.0
+margin_bottom = 120.0
+size_flags_horizontal = 3
+text = "Quit Game"
+script = ExtResource( 1 )
+
+[connection signal="pressed" from="." to="." method="OnQuitTriggered"]

@@ -15,7 +15,7 @@
 [ext_resource path="res://Scripts/DangerLabel.cs" type="Script" id=13]
 [ext_resource path="res://themes/TimeLabelStyleBox.tres" type="StyleBox" id=14]
 [ext_resource path="res://Scripts/Pause.cs" type="Script" id=15]
-[ext_resource path="res://Scripts/QuitGameButton.cs" type="Script" id=16]
+[ext_resource path="res://QuitGameButton.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Scripts/LevelLabel.cs" type="Script" id=17]
 [ext_resource path="res://fonts/TitleFont.tres" type="DynamicFont" id=18]
 
@@ -187,7 +187,7 @@ __meta__ = {
 [node name="PauseTitle" type="Label" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
 margin_left = 189.0
 margin_right = 715.0
-margin_bottom = 197.0
+margin_bottom = 187.0
 size_flags_horizontal = 4
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 1, 0.65098, 1 )
@@ -196,22 +196,22 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Paused"
 
 [node name="HSeparator" type="HSeparator" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 237.0
+margin_top = 227.0
 margin_right = 905.0
-margin_bottom = 287.0
+margin_bottom = 277.0
 custom_constants/separation = 50
 
 [node name="ResumeButton" type="Button" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 327.0
+margin_top = 317.0
 margin_right = 905.0
-margin_bottom = 447.0
+margin_bottom = 437.0
 rect_min_size = Vector2( 0, 120 )
 text = "Resume Game"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 487.0
+margin_top = 477.0
 margin_right = 905.0
-margin_bottom = 607.0
+margin_bottom = 597.0
 rect_min_size = Vector2( 0, 120 )
 custom_constants/separation = 30
 
@@ -221,13 +221,7 @@ margin_bottom = 120.0
 size_flags_horizontal = 3
 text = "Return to Menu"
 
-[node name="QuitGameButton" type="Button" parent="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer"]
-margin_left = 467.0
-margin_right = 905.0
-margin_bottom = 120.0
-size_flags_horizontal = 3
-text = "Quit Game"
-script = ExtResource( 16 )
+[node name="QuitGameButton" parent="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 16 )]
 
 [connection signal="DangerChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/DangerLabel" method="OnDangerChanged"]
 [connection signal="LevelChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/LevelLabel" method="OnLevelChanged"]
@@ -235,8 +229,7 @@ script = ExtResource( 16 )
 [connection signal="ScoreChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/ScoreLabel" method="OnScoreChanged"]
 [connection signal="TimeLeftChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLeftChanged"]
 [connection signal="TimeLowChanged" from="." to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/TimeLabel" method="OnTimeLowChanged"]
-[connection signal="FrogHealthChanged" from="Frog" to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]
 [connection signal="FrogHealthChanged" from="Frog" to="." method="OnFrogHealthChanged"]
+[connection signal="FrogHealthChanged" from="Frog" to="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/HealthTextureRect" method="OnFrogHealthChanged"]
 [connection signal="pressed" from="InfoPanelLayer/InfoPanel/MarginContainer/VBoxContainer/PauseButton" to="PauseLayer/Pause" method="OnPauseTriggered"]
 [connection signal="pressed" from="PauseLayer/Pause/PauseBackground/VBoxContainer/ResumeButton" to="PauseLayer/Pause" method="OnUnpauseTriggered"]
-[connection signal="pressed" from="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer/QuitGameButton" to="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer/QuitGameButton" method="OnQuitTriggered"]

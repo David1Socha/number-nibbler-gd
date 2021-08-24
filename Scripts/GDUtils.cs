@@ -45,5 +45,16 @@ namespace NumberNibbler.Scripts
         {
             self.GetTree().Quit();
         }
+
+        /// <summary>
+        /// Transitions from current root scene to the scene provided.
+        /// </summary>
+        /// <param name="self">A node under the current scene</param>
+        /// <param name="newRootScene">The scene to transition to</param>
+        public static void TransitionToScene(this Node self, Node newRootScene)
+        {
+            self.GetTree().Root.AddChild(newRootScene);
+            self.GetTree().CurrentScene.QueueFree();
+        }
     }
 }
