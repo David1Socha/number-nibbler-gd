@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -17,11 +17,7 @@
 [ext_resource path="res://Scripts/Pause.cs" type="Script" id=15]
 [ext_resource path="res://Scripts/QuitGameButton.cs" type="Script" id=16]
 [ext_resource path="res://Scripts/LevelLabel.cs" type="Script" id=17]
-[ext_resource path="res://fonts/Roboto-Black.ttf" type="DynamicFontData" id=18]
-
-[sub_resource type="DynamicFont" id=1]
-size = 100
-font_data = ExtResource( 18 )
+[ext_resource path="res://fonts/TitleFont.tres" type="DynamicFont" id=18]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -189,30 +185,33 @@ __meta__ = {
 }
 
 [node name="PauseTitle" type="Label" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_left = 275.0
-margin_right = 630.0
-margin_bottom = 118.0
+margin_left = 189.0
+margin_right = 715.0
+margin_bottom = 197.0
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 18 )
+custom_colors/font_color = Color( 0, 1, 0.65098, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Paused"
 
 [node name="HSeparator" type="HSeparator" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 158.0
+margin_top = 237.0
 margin_right = 905.0
-margin_bottom = 278.0
-custom_constants/separation = 120
+margin_bottom = 287.0
+custom_constants/separation = 50
 
 [node name="ResumeButton" type="Button" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 318.0
+margin_top = 327.0
 margin_right = 905.0
-margin_bottom = 438.0
+margin_bottom = 447.0
 rect_min_size = Vector2( 0, 120 )
 text = "Resume Game"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PauseLayer/Pause/PauseBackground/VBoxContainer"]
-margin_top = 478.0
+margin_top = 487.0
 margin_right = 905.0
-margin_bottom = 598.0
+margin_bottom = 607.0
 rect_min_size = Vector2( 0, 120 )
 custom_constants/separation = 30
 
