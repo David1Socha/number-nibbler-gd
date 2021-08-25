@@ -1,9 +1,10 @@
-[gd_resource type="Theme" load_steps=7 format=2]
+[gd_resource type="Theme" load_steps=8 format=2]
 
 [ext_resource path="res://fonts/ScorePanelFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://themes/ButtonColor.tres" type="StyleBox" id=2]
 [ext_resource path="res://themes/ScorePanelTheme_LabelStyleBox.tres" type="StyleBox" id=3]
 [ext_resource path="res://themes/ButtonColorRect.tres" type="StyleBox" id=4]
+[ext_resource path="res://images/dropdown_arrow.svg" type="Texture" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -41,7 +42,7 @@ OptionButton/colors/font_color_pressed = Color( 0.466667, 0.466667, 0.466667, 1 
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/hseparation = 2
 OptionButton/fonts/font = null
-OptionButton/icons/arrow = null
+OptionButton/icons/arrow = ExtResource( 5 )
 OptionButton/styles/disabled = ExtResource( 4 )
 OptionButton/styles/focus = ExtResource( 4 )
 OptionButton/styles/hover = ExtResource( 4 )
