@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://themes/UITheme.tres" type="Theme" id=1]
 [ext_resource path="res://QuitGameButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://fonts/TitleFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Scripts/GameOver.cs" type="Script" id=4]
 [ext_resource path="res://fonts/MenuTextFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://ReturnMenuButton.tscn" type="PackedScene" id=6]
 
 [node name="GameOver" type="Node"]
 script = ExtResource( 4 )
@@ -84,11 +85,7 @@ margin_bottom = 693.0
 rect_min_size = Vector2( 0, 120 )
 custom_constants/separation = 30
 
-[node name="ReturnMenuButton" type="Button" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer"]
-margin_right = 437.0
-margin_bottom = 120.0
-size_flags_horizontal = 3
-text = "Return to Menu"
+[node name="ReturnMenuButton" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 6 )]
 
 [node name="QuitGameButton" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 2 )]
 

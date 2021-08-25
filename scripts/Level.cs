@@ -33,7 +33,7 @@ namespace NumberNibbler.Scripts
         private readonly int POINTS_LOST_FOR_WRONG_ANSWER;
 
         [Export]
-        private readonly int HARD_DIFFICULTY_POINTS_MULTIPLIER; //TODO use this when adding difficulties
+        private readonly int HARD_DIFFICULTY_POINTS_MULTIPLIER;
 
         [Export(PropertyHint.Enum, "Addition,Subtraction,Multiplication,Division,Multiples,Basic")]
         private readonly string CATEGORY;
@@ -101,7 +101,6 @@ namespace NumberNibbler.Scripts
             Score = 0;
             UpdateScore(0);
 
-            // TODO may be able to remove these 2 lines once main menu is finished
             Difficulty = Difficulty ?? DIFFICULTY_LEVEL;
             Category = Category ?? CATEGORY;
 
@@ -116,7 +115,7 @@ namespace NumberNibbler.Scripts
             UpdateDanger(danger: false);
             EmitSignal("TimeLowChanged", false);
 
-            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(CATEGORY, Difficulty);
+            _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(Category, Difficulty);
             EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
 
             _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
@@ -155,7 +154,7 @@ namespace NumberNibbler.Scripts
         private void TriggerGameOver()
         {
             var gameOverScene = _gameOverScene.Instance<GameOver>();
-            gameOverScene.Initialize(CATEGORY, Difficulty, Score);
+            gameOverScene.Initialize(Category, Difficulty, Score);
             this.TransitionToScene(gameOverScene);
         }
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Level.cs" type="Script" id=1]
 [ext_resource path="res://Frog.tscn" type="PackedScene" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://QuitGameButton.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Scripts/LevelLabel.cs" type="Script" id=17]
 [ext_resource path="res://fonts/TitleFont.tres" type="DynamicFont" id=18]
+[ext_resource path="res://ReturnMenuButton.tscn" type="PackedScene" id=19]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 1 )
@@ -27,7 +28,7 @@ ENEMY_SPAWN_TIME_DELAY_AFTER_WARNING = 3.0
 MINIMUM_CORRECT_ANSWER_COUNT = 5
 MAXIMUM_CORRECT_ANSWER_COUNT = 11
 POINTS_FOR_CORRECT_ANSWER = 5
-POINTS_LOST_FOR_WRONG_ANSWER = 10
+POINTS_LOST_FOR_WRONG_ANSWER = 5
 HARD_DIFFICULTY_POINTS_MULTIPLIER = 2
 CATEGORY = "Addition"
 DIFFICULTY_LEVEL = "Easy"
@@ -215,11 +216,7 @@ margin_bottom = 597.0
 rect_min_size = Vector2( 0, 120 )
 custom_constants/separation = 30
 
-[node name="ReturnMenuButton" type="Button" parent="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer"]
-margin_right = 437.0
-margin_bottom = 120.0
-size_flags_horizontal = 3
-text = "Return to Menu"
+[node name="ReturnMenuButton" parent="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 19 )]
 
 [node name="QuitGameButton" parent="PauseLayer/Pause/PauseBackground/VBoxContainer/HBoxContainer" instance=ExtResource( 16 )]
 

@@ -46,13 +46,11 @@ namespace NumberNibbler.Scripts.FlyGeneration
 
         public string GenerateCorrectAnswer()
         {
-            // TODO could ensure we draw more uniformly from this pool?
             return GDUtils.PickRandomElement(_correctAnswers, _random);
         }
 
         public string GenerateIncorrectAnswer()
         {
-            // TODO could ensure we draw more uniformly from this pool?
             return GDUtils.PickRandomElement(_incorrectAnswers, _random);
         }
 

@@ -22,7 +22,7 @@ namespace NumberNibbler.Scripts
             public const string Multiplication = "Multiplication";
             public const string Multiples = "Multiples";
 
-            // TODO -- fractions, decimals, exponents, etc... ???
+            // TODO could add other categories -- fractions, decimals, exponents, etc... ???
 
             /// <summary>
             /// Test only value, shouldn't be exposed in actual game
