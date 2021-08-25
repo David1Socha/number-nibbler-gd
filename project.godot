@@ -12,8 +12,11 @@ config_version=4
 
 config/name="Number Nibbler"
 run/main_scene="res://MainMenu.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Number Nibbler"
 config/icon="res://number_nibbler_icon.png"
 config/windows_native_icon="res://number_nibbler_icon.ico"
+config/quit_on_go_back=false
 
 [autoload]
 
