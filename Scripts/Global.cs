@@ -29,5 +29,13 @@ namespace NumberNibbler.Scripts
             /// </summary>
             public const string Basic = "Basic";
         }
+
+        public static class Config
+        {
+            public const string FilePath = "user://player_data.nncfg";
+            public const string MenuSettingsSection = "MenuSettings";
+            public const string CategoryValue = "Category";
+            public const string DifficultyValue = "Difficulty";
+        }
     }
 }

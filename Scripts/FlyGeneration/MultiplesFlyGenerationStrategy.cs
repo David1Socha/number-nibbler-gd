@@ -58,7 +58,7 @@ namespace NumberNibbler.Scripts.FlyGeneration
 
         public override string GetPrompt()
         {
-            return $"Multiples of {_answer}";
+            return $"Multiples - {_answer}";
         }
 
         protected override string ConvertAnswerPoolValueToAnswer((int term1, int? term2) answer)

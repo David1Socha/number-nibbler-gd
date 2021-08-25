@@ -7,15 +7,16 @@ namespace NumberNibbler.Scripts
     {
         private bool _initialized = false;
         private string _category, _difficulty;
-        private int _score;
-        private PackedScene _menuScene, _levelScene;
+        private int _score, _highScore;
+        private PackedScene _levelScene;
 
-        public void Initialize(string category, string difficulty, int score)
+        public void Initialize(string category, string difficulty, int score, int highScore)
         {
             _initialized = true;
             _category = category;
             _difficulty = difficulty;
             _score = score;
+            _highScore = highScore;
         }
 
         public override void _Ready()
@@ -33,10 +34,11 @@ namespace NumberNibbler.Scripts
             var gameModeLabel = GetNode<Label>("GameOverControl/GameOverBackground/VBoxContainer/GameModeLabel");
             gameModeLabel.Text = $"{_category} - {_difficulty}";
 
-            var scoreLabel = GetNode<Label>("GameOverControl/GameOverBackground/VBoxContainer/ScoreLabel");
+            var scoreLabel = GetNode<Label>("GameOverControl/GameOverBackground/VBoxContainer/HBoxContainerScores/ScoreLabel");
             scoreLabel.Text = $"Score : {_score}";
 
-            // TODO fetch high score and display that here as well. will need a new Hboxcontainer and highscore label
+            var highScoreLabel = GetNode<Label>("GameOverControl/GameOverBackground/VBoxContainer/HBoxContainerScores/HighScoreLabel");
+            highScoreLabel.Text = $"Best : {_highScore}";
         }
 
         public void OnPlayAgain()

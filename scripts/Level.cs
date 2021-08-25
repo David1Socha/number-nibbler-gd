@@ -167,8 +167,19 @@ namespace NumberNibbler.Scripts
 
         private void TriggerGameOver()
         {
+            // this could be extracted to it's own class, but we're only saving like 3 values to config so keeping as-is for convenience
+            var config = new ConfigFile();
+            config.Load(Global.Config.FilePath);
+            int highScore = (int)config.GetValue(Difficulty, Category, 0);
+            if (Score > highScore)
+            {
+                highScore = Score;
+                config.SetValue(Difficulty, Category, highScore);
+                config.Save(Global.Config.FilePath);
+            }
+
             var gameOverScene = _gameOverScene.Instance<GameOver>();
-            gameOverScene.Initialize(Category, Difficulty, Score);
+            gameOverScene.Initialize(Category, Difficulty, Score, highScore);
             this.TransitionToScene(gameOverScene);
         }
 
@@ -210,6 +221,16 @@ namespace NumberNibbler.Scripts
                 {
                     fly.Text = _flyGenerationStrategy.GenerateIncorrectAnswer();
                 }
+            }
+        }
+
+        public void BuzzRandomFly()
+        {
+            var flyRow = GDUtils.PickRandomElement(_flyGrid, _random);
+            var fly = GDUtils.PickRandomElement(flyRow, _random);
+            if (fly != null)
+            {
+                fly.PlayAnimation();
             }
         }
 

@@ -59,14 +59,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScoreLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer"]
-margin_left = 261.0
+[node name="HBoxContainerScores" type="HBoxContainer" parent="GameOverControl/GameOverBackground/VBoxContainer"]
 margin_top = 320.0
-margin_right = 643.0
+margin_right = 905.0
 margin_bottom = 393.0
-size_flags_horizontal = 4
+size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainerScores"]
+margin_right = 382.0
+margin_bottom = 73.0
+size_flags_horizontal = 2
 custom_fonts/font = ExtResource( 5 )
 text = "Score : 100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighScoreLabel" type="Label" parent="GameOverControl/GameOverBackground/VBoxContainer/HBoxContainerScores"]
+margin_left = 564.0
+margin_right = 905.0
+margin_bottom = 73.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 5 )
+text = "Best : 200"
+align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }

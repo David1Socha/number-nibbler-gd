@@ -33,12 +33,12 @@ namespace NumberNibbler.Scripts
 
         public static T PickRandomElement<T>(List<T> list, RandomNumberGenerator random)
         {
-            return list[random.RandiRange(0, list.Count - 1)];
+            return list == null ? default(T) : list[random.RandiRange(0, list.Count - 1)];
         }
 
         public static T PickRandomElement<T>(T[] list, RandomNumberGenerator random)
         {
-            return list[random.RandiRange(0, list.Length - 1)];
+            return list == null ? default(T) : list[random.RandiRange(0, list.Length - 1)];
         }
 
         public static void Quit(this Node self)
