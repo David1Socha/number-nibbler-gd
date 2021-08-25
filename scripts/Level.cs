@@ -44,6 +44,15 @@ namespace NumberNibbler.Scripts
         [Export]
         private readonly int INITIAL_TIME_LIMIT;
 
+        [Export]
+        private readonly int SECONDS_LOST_PER_LEVEL_INCREASE;
+
+        [Export]
+        private readonly int MINIMUM_TIME_LIMIT;
+
+        [Export]
+        private readonly float TIME_POINTS_MULTIPLIER;
+
         [Signal]
         public delegate void ScoreChanged(int score);
 
@@ -118,7 +127,12 @@ namespace NumberNibbler.Scripts
             _flyGenerationStrategy = FlyGenerationStrategyFactory.GetFlyGenerationStrategy(Category, Difficulty);
             EmitSignal("PromptChanged", _flyGenerationStrategy.GetPrompt());
 
-            _currentTimeLimit = INITIAL_TIME_LIMIT; // TODO update this once we have multiple level support
+            _currentTimeLimit = INITIAL_TIME_LIMIT - (level - 1) * SECONDS_LOST_PER_LEVEL_INCREASE;
+            if (_currentTimeLimit < MINIMUM_TIME_LIMIT)
+            {
+                _currentTimeLimit = MINIMUM_TIME_LIMIT;
+            }
+
             _timeRemaining = _currentTimeLimit;
 
             SpawnAllFlies();
@@ -279,7 +293,7 @@ namespace NumberNibbler.Scripts
             if (AreAllCorrectFliesEaten())
             {
                 _levelCompleteSound.Play();
-                int pointsGainedFromExtraTime = (int)_timeRemaining;
+                int pointsGainedFromExtraTime = (int)(_timeRemaining * TIME_POINTS_MULTIPLIER);
                 UpdateScore(pointsGainedFromExtraTime);
 
                 CleanupCurrentLevel();
