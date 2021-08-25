@@ -1,15 +1,26 @@
-[gd_resource type="Theme" load_steps=8 format=2]
+[gd_resource type="Theme" load_steps=10 format=2]
 
 [ext_resource path="res://fonts/ScorePanelFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://themes/ButtonColor.tres" type="StyleBox" id=2]
 [ext_resource path="res://themes/ScorePanelTheme_LabelStyleBox.tres" type="StyleBox" id=3]
-[ext_resource path="res://themes/ButtonColorRect.tres" type="StyleBox" id=4]
 [ext_resource path="res://images/dropdown_arrow.svg" type="Texture" id=5]
+[ext_resource path="res://themes/ButtonColorRect.tres" type="StyleBox" id=6]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 0.6, 1 )
+
+[sub_resource type="ImageTexture" id=4]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.745098, 0.858824, 0.854902, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
 
 [resource]
 default_font = ExtResource( 1 )
@@ -43,11 +54,11 @@ OptionButton/constants/arrow_margin = 2
 OptionButton/constants/hseparation = 2
 OptionButton/fonts/font = null
 OptionButton/icons/arrow = ExtResource( 5 )
-OptionButton/styles/disabled = ExtResource( 4 )
-OptionButton/styles/focus = ExtResource( 4 )
-OptionButton/styles/hover = ExtResource( 4 )
-OptionButton/styles/normal = ExtResource( 4 )
-OptionButton/styles/pressed = ExtResource( 4 )
+OptionButton/styles/disabled = ExtResource( 6 )
+OptionButton/styles/focus = ExtResource( 6 )
+OptionButton/styles/hover = ExtResource( 6 )
+OptionButton/styles/normal = ExtResource( 6 )
+OptionButton/styles/pressed = ExtResource( 6 )
 PanelContainer/styles/panel = SubResource( 2 )
 PopupMenu/colors/font_color = Color( 0, 0, 0, 1 )
 PopupMenu/colors/font_color_accel = Color( 0.7, 0.7, 0.7, 0.8 )
@@ -59,12 +70,12 @@ PopupMenu/constants/vseparation = 4
 PopupMenu/fonts/font = null
 PopupMenu/icons/checked = null
 PopupMenu/icons/radio_checked = null
-PopupMenu/icons/radio_unchecked = null
+PopupMenu/icons/radio_unchecked = SubResource( 4 )
 PopupMenu/icons/submenu = null
 PopupMenu/icons/unchecked = null
 PopupMenu/styles/hover = null
 PopupMenu/styles/labeled_separator_left = null
 PopupMenu/styles/labeled_separator_right = null
-PopupMenu/styles/panel = ExtResource( 4 )
+PopupMenu/styles/panel = SubResource( 3 )
 PopupMenu/styles/panel_disabled = null
 PopupMenu/styles/separator = null
