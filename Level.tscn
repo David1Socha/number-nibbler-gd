@@ -166,6 +166,7 @@ pause_mode = 2
 layer = 100
 
 [node name="Pause" type="Control" parent="PauseLayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 8 )
