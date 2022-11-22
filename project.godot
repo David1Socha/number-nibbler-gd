@@ -17,7 +17,7 @@ config/custom_user_dir_name="Number Nibbler"
 boot_splash/image="res://number_nibbler_icon_432.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.298039, 0.858824, 1, 1 )
-config/icon="res://number_nibbler_icon.png"
+config/icon="res://number_nibbler_icon_1024.png"
 config/windows_native_icon="res://number_nibbler_icon.ico"
 config/quit_on_go_back=false
 
