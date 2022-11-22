@@ -43,8 +43,8 @@ __meta__ = {
 margin_right = 1093.0
 margin_bottom = 187.0
 size_flags_horizontal = 4
-custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 1, 0.65098, 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "Number Nibbler"
 
 [node name="PlayButton" type="Button" parent="MainMenuControl/MainMenuBackground/VBoxContainer"]

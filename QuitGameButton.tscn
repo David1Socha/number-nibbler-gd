@@ -9,8 +9,5 @@ margin_bottom = 120.0
 size_flags_horizontal = 3
 text = "Quit Game"
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="pressed" from="." to="." method="OnQuitTriggered"]
